@@ -1,14 +1,61 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
-import { Box, Card, Grid, Paper, Typography } from "@material-ui/core";
+import { Box, Card, createStyles, Grid, makeStyles, Paper, rgbToHex, Theme, Typography } from "@material-ui/core";
 import { useParams, useNavigate } from 'react-router-dom';
+import Rating from '@material-ui/lab/Rating';
 
 // redux
 import { RootState } from './Store/Common/CommonStore';
 import { useSelector, useDispatch } from 'react-redux';
 import { CartItemType } from './Types/CartItemType';
 
+// icons
+import { KeyboardArrowLeftSharp } from '@material-ui/icons';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      maxWidth: 1500,
+      margin: 'auto',
+      padding: theme.spacing(1),
+    },
+    backButton: {
+      margin: theme.spacing(1),
+      textTransform: 'none',
+    },
+    content: {
+      padding: theme.spacing(1),
+      [theme.breakpoints.up('sm')]: {
+        padding: theme.spacing(2),
+      },
+    },
+    content_small: {
+      padding: theme.spacing(1),
+    },
+    minusButton: {
+      textTransform: 'none',
+      backgroundColor: '#e2e2e2e8',
+    },
+    plusButton: {
+      textTransform: 'none',
+      backgroundColor: '#b8b8b8e8',
+    },
+    addToCartButton: {
+      margin: theme.spacing(2),
+      padding: theme.spacing(1),
+      textTransform: 'none',
+      backgroundColor: '#ffc164',
+      alignSelf: 'flex-end'
+    },
+  }),
+);
+
+
 const ItemDetails = () => {
+  const classes = useStyles();
+
   const { storeItems } = useSelector((state: RootState) => state.common);
 
   const id = useParams().id!;
@@ -16,6 +63,8 @@ const ItemDetails = () => {
   const navigate = useNavigate();
 
   const [currItem, setCurrItem] = useState<CartItemType | undefined>();
+
+  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
     if (storeItems == undefined || id == '') {
@@ -31,56 +80,101 @@ const ItemDetails = () => {
   }, [])
 
   return (
-    <>
-      <Grid container spacing={3}>
+    <div className={classes.root}>
+      <Button startIcon={<KeyboardArrowLeftSharp />} className={classes.backButton} onClick={() => navigate(-1)}>Back</Button>
 
-        <Grid item xs={12} sm={12} md={9}>
-
-          <Grid item xs={12} sm={12} md={9}>
-            <Typography gutterBottom variant="h5">
-              {currItem ? currItem.title : ''}
-            </Typography>
-          </Grid>
-
+      <Paper className={classes.content}>
+        <Grid container spacing={3} >
 
           <Grid item xs={12} sm={12} md={9} >
-            <Paper style={{
-              display: 'flex',
-              width: '300px',
-              height: '300px',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-              <img src={currItem ? currItem.image : ''} alt={currItem ? currItem.title : ''}
-                style={{
-                  maxHeight: '100%',
-                  maxWidth: '100%',
-                }}
-              />
-            </Paper>
+            <Grid item className={classes.content}>
+              <Typography variant="h5">
+                {currItem ? currItem.title : ''}
+              </Typography>
+            </Grid>
+
+            <Grid container className={classes.content}>
+              <Grid item xs={12} sm={12} md={6} lg={5} className={classes.content}>
+                <Paper style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  maxWidth: '300px',
+                  maxHeight: '300px',
+                  width: '300px',
+                  height: '300px',
+                }}>
+                  <img src={currItem ? currItem.image : ''} alt={currItem ? currItem.title : ''}
+                    style={{
+                      maxWidth: '300px',
+                      maxHeight: '300px',
+                    }}
+                  />
+                </Paper>
+              </Grid>
+
+              <Grid item xs={12} sm={12} md={6} lg={7} className={classes.content}>
+                <Typography variant="h6" className={classes.content_small}>
+                  RM {currItem ? currItem.price.toFixed(2) : 0}
+                </Typography>
+
+                <Grid container style={{ alignItems: 'center' }}>
+                  <Rating name="read-only" value={currItem ? currItem.rating.rate : 0} readOnly />
+                  <Typography className={classes.content_small}>
+                    {currItem ? currItem.rating.count : 0}
+                  </Typography>
+                </Grid>
+
+                <Grid container style={{ alignItems: 'center' }}>
+                  <Typography className={classes.content_small}>
+                    Quantity
+                  </Typography>
+
+                  <Button className={classes.minusButton} onClick={() => quantity == 0 ? setQuantity(quantity) : setQuantity(quantity - 1)}>-</Button>
+                  <Typography className={classes.content_small}>
+                    {quantity}
+                  </Typography>
+                  <Button className={classes.plusButton} onClick={() => setQuantity(quantity + 1)}>+</Button>
+
+                </Grid>
+
+                <Button startIcon={<AddShoppingCartIcon />} className={classes.addToCartButton} >Add to cart</Button>
+              </Grid>
+            </Grid>
+
+            <Grid item className={classes.content}>
+              <Typography variant="h5" className={classes.content_small}>
+                Product details
+              </Typography>
+              <Typography >
+                {currItem ? currItem.description : ''}
+              </Typography>
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={12} md={9}>
-            <Typography gutterBottom variant="h5">
-              {currItem ? currItem.description : ''}
-            </Typography>
+          <Grid item xs={12} sm={12} md={3} >
+            <Grid item className={classes.content} >
+              <Typography variant="h6">
+                Delivery Address
+              </Typography>
+              <Typography >
+                Wp Kuala Lumpur, Kuala Lumpur, 50450
+              </Typography>
+            </Grid>
+
+            <Grid item className={classes.content} >
+              <Typography variant="h6">
+                Est Date
+              </Typography>
+              <Typography >
+                3 - 20 day(s)
+              </Typography>
+            </Grid>
           </Grid>
+
         </Grid>
-
-        <Grid item xs={12} sm={12} md={3}>
-          <Grid item xs={12} sm={12} md={3}>
-            <Typography gutterBottom variant="h5">
-              Delivery
-            </Typography>
-            <Typography gutterBottom variant="h5">
-              Est Date
-            </Typography>
-          </Grid>
-
-        </Grid>
-
-      </Grid>
-    </>
+      </Paper>
+    </div>
   );
 }
 

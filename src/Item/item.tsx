@@ -78,7 +78,7 @@ const Item: React.FC<Props> = ({ item, handleAddToCart }) => {
             </CardActionArea>
 
             <Typography className={classes.price} variant="body2" component="h3" >
-                ${item.price}
+                ${item.price.toFixed(2)}
             </Typography>
 
             <Button className={classes.button} onClick={() => handleAddToCart(item)}>Add to cart</Button>
