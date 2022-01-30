@@ -13,14 +13,14 @@ import ItemDetails from '../ItemDetails';
 import Test from '../test';
 
 // components
-import BackToTop from '../Component/BackToTop';
+import NavBar from '../Component/BackToTop';
 
 
 const Navigator = () => {
 
     return (
         <BrowserRouter>
-            <BackToTop />
+            <NavBar />
 
             <Routes>
                 <Route path='/*' element={<Main />} />
