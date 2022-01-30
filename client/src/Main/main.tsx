@@ -108,10 +108,12 @@ const Main = () => {
                 onDrag={eventControl}
                 onStop={eventControl}
             >
-                <StyledButton disabled={isDragging} onClick={() => setCartOpen(true)} color='secondary'>
-                    <Badge badgeContent={getTotalItems(cartItems)} color='error'>
-                        <AddShoppingCartIcon />
-                    </Badge>
+                <StyledButton disabled={isDragging} onClick={() => setCartOpen(true)} color='primary'>
+                    <div style={{ backgroundColor: 'rgba(253, 189, 14, 0.884)', borderRadius: 18, width: 37, height: 37, boxShadow: '1px 5px 15px 1px rgba(0,0,0,0.8)' }}>
+                        <Badge badgeContent={getTotalItems(cartItems)} color='error'>
+                            <AddShoppingCartIcon />
+                        </Badge>
+                    </div>
                 </StyledButton>
             </Draggable>
 
