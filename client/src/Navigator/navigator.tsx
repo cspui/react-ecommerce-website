@@ -13,7 +13,8 @@ import ItemDetails from '../ItemDetails';
 import Test from '../test';
 
 // components
-import NavBar from '../Component/BackToTop';
+import NavBar from '../Component/NavBar';
+import ScrollToTop from '../Component/ScrollToTop';
 
 
 const Navigator = () => {
@@ -22,20 +23,24 @@ const Navigator = () => {
         <BrowserRouter>
             <NavBar />
 
-            <Routes>
-                <Route path='/*' element={<Main />} />
+            <ScrollToTop >
+                <Routes>
 
-                <Route path="/t" element={<Test />} />
+                    <Route path='/*' element={<Main />} />
 
-                <Route path="/itemdetails" >
-                    <Route path=":id" element={<ItemDetails />} />
-                </Route>
+                    <Route path="/t" element={<Test />} />
 
-                <Route path='/login' element={<Login />} />
+                    <Route path="/itemdetails" >
+                        <Route path=":id" element={<ItemDetails />} />
+                    </Route>
 
-                <Route path='/signup' element={<SignUp />} />
+                    <Route path='/login' element={<Login />} />
 
-            </Routes>
+                    <Route path='/signup' element={<SignUp />} />
+
+                </Routes>
+
+            </ScrollToTop>
         </BrowserRouter>
     )
 };

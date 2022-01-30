@@ -25,9 +25,9 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import { useNavigate } from "react-router-dom";
 
-interface Props {
-  children?: React.ReactElement;
-}
+
+import Props from "../Types/PropsType";
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -118,7 +118,7 @@ function ScrollTop(props: Props) {
   );
 }
 
-const BackToTop = (props: Props) => {
+const NavBar = (props: Props) => {
   const classes = useStyles();
   const [auth, setAuth] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -216,4 +216,4 @@ const BackToTop = (props: Props) => {
   );
 }
 
-export default BackToTop;
+export default NavBar;
