@@ -145,7 +145,7 @@ const NavBar = (props: Props) => {
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title} onClick={() => navigate('/', { replace: true })}>
+          <Typography variant="h6" className={classes.title} onClick={() => navigate('/')}>
             Logo
           </Typography>
           <div className={classes.search}>
@@ -199,7 +199,7 @@ const NavBar = (props: Props) => {
             :
             (
               <Button color='secondary' onClick={() => {
-                navigate('/login', { replace: true });
+                navigate('/login');
                 setAuth(!auth)
               }}>Login</Button>
             )}

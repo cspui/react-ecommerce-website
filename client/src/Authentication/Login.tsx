@@ -13,6 +13,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import { KeyboardArrowLeftSharp } from '@material-ui/icons';
+import { useParams, useNavigate } from 'react-router-dom';
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -33,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  backButton: {
+    margin: theme.spacing(1),
+    textTransform: 'none',
+  },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
@@ -48,9 +55,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   return (
     <Container component="main" maxWidth="xs">
+      <Button startIcon={<KeyboardArrowLeftSharp />} className={classes.backButton} onClick={() => navigate(-1)}>Back</Button>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
