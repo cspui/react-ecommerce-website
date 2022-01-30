@@ -4,9 +4,10 @@ const functions = require("firebase-functions");
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 
 
-// ######### Cross platform firebase.json command #####
+// ######### Cross platform firebase.json command #######
+// Powershell or cmd Deployment
 // https://stackoverflow.com/questions/48345315/error-deploying-with-firebase-on-npm-prefix-resource-dir-run-lint
-
+// "npm --prefix ./functions/ run lint"
 
 // firebase deploy
 // after npm build in client copy build files to functions/build 

@@ -30,6 +30,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "serve": "react-scripts build && xcopy \"build\" \"..\\functions\\build\" /s/i/f/y && cd .. && firebase serve",
+    "deploy": "react-scripts build && xcopy \"build\" \"..\\functions\\build\" /s/i/f/y && cd .. && firebase deploy",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

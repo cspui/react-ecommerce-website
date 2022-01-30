@@ -10,7 +10,7 @@
 /coverage
 
 # production
-/client/build
+/*/build
 
 # firebase cache
 /.firebase
