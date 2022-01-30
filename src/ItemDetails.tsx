@@ -158,7 +158,7 @@ const ItemDetails = () => {
                 Delivery Address
               </Typography>
               <Typography >
-                Wp Kuala Lumpur, Kuala Lumpur, 50450
+                Kuala Lumpur, Kuala Lumpur, 50450
               </Typography>
             </Grid>
 
