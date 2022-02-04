@@ -12,6 +12,11 @@ app.get('/*', (req, res) => {
 });
 
 
+// add routing
+const apiRoute = require("./api/routes/data");
+app.use("/api", apiRoute);
+
+
 let server = app.listen(process.env.PORT || 3000, () => {
     var host = server.address().address;
     var port = server.address().port;
