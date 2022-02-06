@@ -2,10 +2,10 @@ import * as React from 'react';
 import { useEffect } from "react";
 import { useLocation } from "react-router";
 
-import Props from "../Types/PropsType";
+import { ChildrenProps } from "../Types/PropsType";
 
-
-const ScrollToTop = (props: Props) => {
+// scroll restoration to top when navigating to new page
+const ScrollToTop = (props: ChildrenProps) => {
     const location = useLocation();
     useEffect(() => {
         window.scrollTo(0, 0);

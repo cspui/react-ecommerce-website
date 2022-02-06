@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { IconButton } from "@material-ui/core";
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 export const Wrapper = styled.div`
     margin-left: 30px;
@@ -16,3 +17,17 @@ export const StyledButton = styled(IconButton)`
     /* right: '100%';
     top: 10px; */
 `
+
+export const appStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            marginLeft: 0,
+            marginRight: 0,
+            marginTop: -9,
+            [theme.breakpoints.up('sm')]: {
+                marginLeft: 30,
+                marginRight: 30,
+            },
+        },
+    })
+);

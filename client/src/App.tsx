@@ -1,31 +1,19 @@
 import React from 'react';
 
 // styles
-import { Wrapper, } from "./App.styles";
+import { appStyles, } from "./App.styles";
 
 // theme
-import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
-import theme from './Themes/theme';
+import { ThemeProvider } from "@material-ui/core/styles";
+import Theme from './Themes/Theme';
 
-import Navigator from './Navigator/navigator';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    marginLeft: 0,
-    marginRight: 0,
-    marginTop: -9,
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: 30,
-      marginRight: 30,
-    },
-  },
-}));
+import Navigator from './Navigator/Navigator';
 
 const App = () => {
-  const classes = useStyles();
+  const classes = appStyles();
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={Theme}>
       {/* <Wrapper> */}
       <div className={classes.root}>
         <Navigator />

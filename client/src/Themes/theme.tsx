@@ -1,16 +1,17 @@
 import { createTheme, responsiveFontSizes } from "@material-ui/core/styles";
+import Color from "./Color";
 
-let theme = createTheme({
+let Theme = createTheme({
     palette: {
         primary: {
-            main: '#000000dd'
+            main: Color.primary
         },
         secondary: {
-            main: '#f3f3f3f4'
+            main: Color.secondary
         },
     },
 });
 
-theme = responsiveFontSizes(theme);
+Theme = responsiveFontSizes(Theme);
 
-export default theme;
+export default Theme;

@@ -1,60 +1,21 @@
 import React from 'react';
-// import { Button } from "@material-ui/core";
 
-import { CartItemType } from '../Types/CartItemType';
+import { itemStyles } from "./Item.styles";
 
-import { Wrapper } from "./item.styles";
-
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
 import { useNavigate } from 'react-router-dom';
 
-
-type Props = {
-    item: CartItemType;
-    handleAddToCart: (clickedItem: CartItemType) => void;
-}
-
-const useStyles = makeStyles({
-    root: {
-        height: '100%',
-    },
-    media: {
-        height: '80%',
-        flexGrow: 1,
-        flexDirection: 'column',
-        alignItems: 'stretch',
-    },
-    image: {
-        // user-drag: none;
-        // -webkit-user-drag: none;
-        // user-select: none;
-        // -moz-user-select: none;
-        // -webkit-user-select: none;
-        // -ms-user-select: none;
-    },
-    price: {
-        height: '10%',
-        paddingLeft: 15,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-    },
-    button: {
-        height: '10%',
-        width: '100%',
-    },
-});
+import { ItemProps } from '../Types/PropsType'
 
 
-const Item: React.FC<Props> = ({ item, handleAddToCart }) => {
-    const classes = useStyles();
+const Item: React.FC<ItemProps> = ({ item, handleAddToCart }) => {
+    const classes = itemStyles();
 
     const navigate = useNavigate();
 

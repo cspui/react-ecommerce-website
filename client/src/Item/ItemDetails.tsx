@@ -1,64 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
-import { Box, Card, createStyles, Grid, makeStyles, Paper, rgbToHex, Theme, Typography } from "@material-ui/core";
+import { Grid, Paper, Typography } from "@material-ui/core";
 import { useParams, useNavigate } from 'react-router-dom';
 import Rating from '@material-ui/lab/Rating';
 
 // redux
-import { RootState } from './Store/Common/CommonStore';
+import { RootState } from '../Store/Common/CommonStore';
 import { useSelector, useDispatch } from 'react-redux';
-import { CartItemType } from './Types/CartItemType';
+import { CartItemType } from '../Types/CartItemType';
 
 // icons
 import { KeyboardArrowLeftSharp } from '@material-ui/icons';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      maxWidth: 1500,
-      margin: 'auto',
-      padding: theme.spacing(1),
-    },
-    backButton: {
-      margin: theme.spacing(1),
-      textTransform: 'none',
-    },
-    content: {
-      padding: theme.spacing(1),
-      [theme.breakpoints.up('sm')]: {
-        padding: theme.spacing(2),
-      },
-    },
-    content_small: {
-      padding: theme.spacing(1),
-    },
-    minusButton: {
-      textTransform: 'none',
-      backgroundColor: '#e2e2e2e8',
-    },
-    plusButton: {
-      textTransform: 'none',
-      backgroundColor: '#b8b8b8e8',
-    },
-    addToCartButton: {
-      margin: theme.spacing(2),
-      padding: theme.spacing(1),
-      textTransform: 'none',
-      backgroundColor: '#ffc164',
-      alignSelf: 'flex-end'
-    },
-  }),
-);
+// styles
+import { itemDetailsStyles } from './ItemDetails.styles';
 
 
 const ItemDetails = () => {
-  const classes = useStyles();
+  const classes = itemDetailsStyles();
 
   const { storeItems } = useSelector((state: RootState) => state.common);
 
-  const id = useParams().id!;
+  const id = useParams().id;
 
   const navigate = useNavigate();
 
@@ -67,7 +31,7 @@ const ItemDetails = () => {
   const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
-    if (storeItems == undefined || id == '') {
+    if (id == undefined || storeItems == undefined) {
       navigate('/', { replace: true });
     } else {
       setCurrItem(

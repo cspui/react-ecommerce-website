@@ -26,12 +26,15 @@ export const CommonSlice = createSlice({
         incrementByAmount: (state, action: PayloadAction<number>) => {
             state.value += action.payload;
         },
+        // login status
         updateLogin: (state, action: PayloadAction<boolean>) => {
             state.isLogin = action.payload;
         },
+        // for items in Cart
         updateCartItem: (state, action: PayloadAction<CartItemType[]>) => {
             state.cartItem = action.payload;
         },
+        // for items display in store
         updateStoreItems: (state, action: PayloadAction<CartItemType[]>) => {
             state.storeItems = action.payload;
         }

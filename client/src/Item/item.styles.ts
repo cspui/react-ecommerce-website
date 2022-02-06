@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 export const Wrapper = styled.div`
     display: flex;
@@ -25,3 +26,29 @@ export const Wrapper = styled.div`
         height: 100%;
     }
 `;
+
+
+export const itemStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            height: '100%',
+        },
+        media: {
+            height: '80%',
+            flexGrow: 1,
+            flexDirection: 'column',
+            alignItems: 'stretch',
+        },
+        price: {
+            height: '10%',
+            paddingLeft: 15,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+        },
+        button: {
+            height: '10%',
+            width: '100%',
+        },
+    })
+);

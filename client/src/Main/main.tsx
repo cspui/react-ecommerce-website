@@ -9,8 +9,8 @@ import { Grid } from "@material-ui/core";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import { Badge } from "@material-ui/core";
 
-import Item from "../Item/item";
-import Cart from '../Cart/cart';
+import Item from "../Item/Item";
+import Cart from '../Cart/Cart';
 
 import Draggable from 'react-draggable';
 

@@ -6,10 +6,10 @@ import {
 } from "react-router-dom";
 
 // pages
-import Main from '../Main/main';
+import Main from '../Main/Main';
 import Login from '../Authentication/Login';
 import SignUp from '../Authentication/Signup';
-import ItemDetails from '../ItemDetails';
+import ItemDetails from '../Item/ItemDetails';
 import Test from '../test';
 
 // components
