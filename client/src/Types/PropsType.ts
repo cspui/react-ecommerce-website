@@ -6,7 +6,6 @@ export interface ChildrenProps {
 
 export type ItemProps = {
     item: CartItemType;
-    handleAddToCart: (clickedItem: CartItemType) => void;
 }
 
 export type CartProps = {
@@ -17,8 +16,6 @@ export type CartProps = {
 
 export type CartItemProps = {
     item: CartItemType;
-    addToCart: (clickedItem: CartItemType) => void;
-    removeFromCart: (id: number) => void;
 }
 
 

@@ -9,5 +9,6 @@ export type CartItemType = {
         count: number;
         rate: number;
     }
+    
     amount: number;
 }

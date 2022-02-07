@@ -31,56 +31,54 @@ const getProducts = async (): Promise<CartItemType[]> =>
 
 
 const Main = () => {
-    const { storeItems } = useSelector((state: RootState) => state.common);
     const dispatch = useDispatch();
+    
+    const { cartItems: cartItem } = useSelector((state: RootState) => state.common);
 
     const [cartOpen, setCartOpen] = useState(false);
-    const [cartItems, setCartItems] = useState([] as CartItemType[])
+    
     const [isDragging, setIsDragging] = useState<boolean>(false);
-
+    const defaultCartPosition = { x: 0, y: 0 };
+    
     const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
-
     console.log(data);
 
     useEffect(() => {
         if (data)
-            dispatch(updateStoreItems(data));
-
+        dispatch(updateStoreItems(data));
     }, [data])
 
 
-    const position = { x: 0, y: 0 };
-
     const getTotalItems = (items: CartItemType[]) => items.reduce((acc: number, items) => acc + items.amount, 0);
 
-    const handleAddToCart = (clickedItem: CartItemType) => {
-        setCartItems(prev => {
-            const isItemInCart = prev.find(item => item.id === clickedItem.id)
+    // const handleAddToCart = (clickedItem: CartItemType) => {
+    //     setCartItems(prev => {
+    //         const isItemInCart = prev.find(item => item.id === clickedItem.id)
 
-            if (isItemInCart) {
-                return prev.map(item => (
-                    item.id === clickedItem.id
-                        ? { ...item, amount: item.amount + 1 }
-                        : item
-                ));
-            }
+    //         if (isItemInCart) {
+    //             return prev.map(item => (
+    //                 item.id === clickedItem.id
+    //                     ? { ...item, amount: item.amount + 1 }
+    //                     : item
+    //             ));
+    //         }
 
-            return [...prev, { ...clickedItem, amount: 1 }]
-        })
-    };
+    //         return [...prev, { ...clickedItem, amount: 1 }]
+    //     })
+    // };
 
-    const handleRemoveFromCart = (id: number) => {
-        setCartItems(prev =>
-            prev.reduce((ack, item) => {
-                if (item.id === id) {
-                    if (item.amount === 1) return ack;
-                    return [...ack, { ...item, amount: item.amount - 1 }];
-                } else {
-                    return [...ack, item];
-                }
-            }, [] as CartItemType[])
-        );
-    };
+    // const handleRemoveFromCart = (id: number) => {
+    //     setCartItems(prev =>
+    //         prev.reduce((ack, item) => {
+    //             if (item.id === id) {
+    //                 if (item.amount === 1) return ack;
+    //                 return [...ack, { ...item, amount: item.amount - 1 }];
+    //             } else {
+    //                 return [...ack, item];
+    //             }
+    //         }, [] as CartItemType[])
+    //     );
+    // };
 
     const eventControl = (event: { type: any; }, info: any) => {
         if (event.type === 'mousemove' || event.type === 'touchmove') {
@@ -100,17 +98,18 @@ const Main = () => {
     return (
         <>
             <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)} >
-                <Cart cartItems={cartItems} addToCart={handleAddToCart} removeFromCart={handleRemoveFromCart} />
+                <Cart />
             </Drawer>
 
             <Draggable
-                defaultPosition={position}
+                defaultPosition={defaultCartPosition}
                 onDrag={eventControl}
                 onStop={eventControl}
             >
                 <StyledButton disabled={isDragging} onClick={() => setCartOpen(true)} color='primary'>
+                    {/* may need change the icon button to Fab */}
                     <div style={{ backgroundColor: 'rgba(253, 189, 14, 0.884)', borderRadius: 18, width: 37, height: 37, boxShadow: '1px 5px 15px 1px rgba(0,0,0,0.8)' }}>
-                        <Badge badgeContent={getTotalItems(cartItems)} color='error'>
+                        <Badge badgeContent={getTotalItems(cartItem)} color='error'>
                             <AddShoppingCartIcon />
                         </Badge>
                     </div>
@@ -120,11 +119,10 @@ const Main = () => {
             <Grid container spacing={3}>
                 {data?.map(item => (
                     <Grid item key={item.id} xs={12} sm={6} md={4} lg={3} xl={2}>
-                        <Item item={item} handleAddToCart={handleAddToCart} />
+                        <Item item={item} />
                     </Grid>
                 ))}
             </Grid>
-
 
         </>
     )
