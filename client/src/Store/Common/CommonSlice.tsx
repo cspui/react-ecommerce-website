@@ -48,6 +48,7 @@ export const CommonSlice = createSlice({
                         ? { ...item, amount: item.amount + 1 }
                         : item
                 ));
+                return
             }
 
             state.cartItems = [...state.cartItems, { ...action.payload, amount: 1 }];
