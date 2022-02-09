@@ -1,4 +1,10 @@
 import * as React from 'react';
+
+// Imrpovements : lazy loading
+// https://stackoverflow.com/questions/60390144/react-lazy-loading-when-to-use
+
+
+// router
 import {
     BrowserRouter,
     Routes,
@@ -12,16 +18,26 @@ import SignUp from '../Authentication/Signup';
 import ItemDetails from '../Item/ItemDetails';
 import Test from '../test';
 
+// redux
+import { RootState } from '../Store/Common/CommonStore';
+import { useSelector, useDispatch } from 'react-redux';
+
 // components
 import NavBar from '../Component/NavBar';
 import ScrollToTop from '../Component/ScrollToTop';
 
+// mui
+import { LinearProgress } from '@material-ui/core';
+
 
 const Navigator = () => {
+    const { isLoading } = useSelector((state: RootState) => state.common);
 
     return (
         <BrowserRouter>
             <NavBar />
+
+            {isLoading && <LinearProgress />}
 
             <ScrollToTop >
                 <Routes>

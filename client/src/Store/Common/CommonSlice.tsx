@@ -7,6 +7,7 @@ export interface CommonState {
     isLogin: boolean,                                     // is user logged in
     cartItems: CartItemType[] | [],                       // items in the cart                                
     storeItems: CartItemType[] | [],                      // items show in the store
+    isLoading: boolean,                                   // is the screen loading
 }
 
 const initialState: CommonState = {
@@ -14,6 +15,7 @@ const initialState: CommonState = {
     isLogin: false,
     cartItems: [],
     storeItems: [],
+    isLoading: true
 }
 
 export const CommonSlice = createSlice({
@@ -54,6 +56,7 @@ export const CommonSlice = createSlice({
             state.cartItems = [...state.cartItems, { ...action.payload, amount: 1 }];
         },
         removeFromCart: (state, action: PayloadAction<number>) => {
+            // typescript recude bugged
             // state.cartItem = state.cartItem.reduce((ack: CartItemType[], item: CartItemType) => {
             //     if (item.id === action.payload) {
             //         if (item.amount === 1) return ack;
@@ -78,7 +81,12 @@ export const CommonSlice = createSlice({
         // for items display in store
         updateStoreItems: (state, action: PayloadAction<CartItemType[]>) => {
             state.storeItems = action.payload;
-        }
+        },
+
+        // for loading status
+        updateLoadingStatus: (state, action: PayloadAction<boolean>) => {
+            state.isLoading = action.payload;
+        },
     },
 })
 
@@ -95,6 +103,9 @@ export const {
   removeFromCart,
 
   updateStoreItems,
+
+  updateLoadingStatus,
+  
 } = CommonSlice.actions;
 
 export default CommonSlice.reducer;

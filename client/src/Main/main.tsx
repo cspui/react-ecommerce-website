@@ -23,7 +23,7 @@ import { CartItemType } from '../Types/CartItemType';
 // redux
 import { RootState } from '../Store/Common/CommonStore';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateCartItem, updateStoreItems } from '../Store/Common/CommonSlice';
+import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/Common/CommonSlice';
 
 
 const getProducts = async (): Promise<CartItemType[]> =>
@@ -47,6 +47,11 @@ const Main = () => {
         if (data)
         dispatch(updateStoreItems(data));
     }, [data])
+
+    useEffect(() => {
+        // update loading status
+        dispatch(updateLoadingStatus(isLoading));
+    }, [isLoading])
 
 
     const getTotalItems = (items: CartItemType[]) => items.reduce((acc: number, items) => acc + items.amount, 0);
@@ -92,7 +97,6 @@ const Main = () => {
         }
     }
 
-    if (isLoading) return <LinearProgress color='secondary' />
     if (error) return <div> something wrong </div>
 
     return (
