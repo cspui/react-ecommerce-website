@@ -33,7 +33,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     3. firestore and sample data
     4. cart checkout ui & stripe payment FPX
     5. JWT auth
-    6. guarded routes for restricted access
+    6. Guarded routes for restricted access to page
     7. middleware for authentication request in backend
     8. firebase security rules for restricted access to data (✅ need more test)
         - restrict read access to User collection to itself (uid) but allow write access to anyone (✅)
@@ -43,19 +43,19 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
 
     unassigned:
     Admin custom claim or role
-    error modal popup
-    profile page and functions
-    comments and ratings
-    settings ?
-    notification sys
-    search func
-    menu
+    Error modal popup
+    Profile page and functions
+    Comments and ratings for produts
+    Settings ?
+    Notification sys
+    Search func product
+    Menu side bar
 
 
     POST Development:
-    image upload (firestore bucket ? store in aws s3 ?)
-    admin functions (batch upload product etc)
-    styling
+    image upload func (firestore bucket ? store in aws s3 ?)
+    Admin functions / Panel (batch upload product etc)
+    styling fix
 
 
     Explore:
@@ -82,11 +82,11 @@ const Main = () => {
     const defaultCartPosition = { x: 0, y: 0 };
     
     const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
-    console.log(data);
-
+    
     useEffect(() => {
         if (data)
-        dispatch(updateStoreItems(data));
+            dispatch(updateStoreItems(data));
+        console.log(data);
     }, [data])
 
     useEffect(() => {

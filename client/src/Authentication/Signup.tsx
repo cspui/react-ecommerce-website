@@ -111,8 +111,6 @@ export default function SignUp() {
       return;
     }
 
-    console.log(fname, lname, email, password);
-
     // call api
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
@@ -214,14 +212,16 @@ export default function SignUp() {
       >
         Back
       </Button>
-      {/* <CssBaseline /> */}
+
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
+
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
+
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -280,6 +280,7 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
+
           <Button
             fullWidth
             // type="submit"
@@ -290,6 +291,7 @@ export default function SignUp() {
           >
             Sign Up
           </Button>
+
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link variant="body2" onClick={() => navigate("/login")}>

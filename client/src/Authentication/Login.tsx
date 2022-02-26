@@ -152,9 +152,11 @@ export default function Login() {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
+
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
+
         <form className={classes.form} noValidate>
           <TextField
             required
@@ -184,6 +186,7 @@ export default function Login() {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
+
           <Button
             fullWidth
             variant="contained"
@@ -193,12 +196,14 @@ export default function Login() {
           >
             Sign In
           </Button>
+
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
                 Forgot password?
               </Link>
             </Grid>
+            
             <Grid item>
               <Link variant="body2" onClick={() => navigate('/signup')}>
                 {"Don't have an account? Sign Up"}
