@@ -1,37 +1,26 @@
-import { PlaylistAddOutlined } from '@material-ui/icons';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CartItemType } from '../../Types/CartItemType';
+import { CartItemType } from '../Types/CartItemType';
 
 export interface CommonState {
-    value: number,                                        // value of the counter
     isLogin: boolean,                                     // is user logged in
     cartItems: CartItemType[] | [],                       // items in the cart                                
     storeItems: CartItemType[] | [],                      // items show in the store
-    isLoading: boolean,                                   // is the screen loading
+    isLoading: boolean,                                   // is the data loading
+    navigationTo: string,                                 // navigation to the next page
 }
 
 const initialState: CommonState = {
-    value: 0,
     isLogin: false,
     cartItems: [],
     storeItems: [],
-    isLoading: true
+    isLoading: true,
+    navigationTo: '',
 }
 
 export const CommonSlice = createSlice({
     name: 'Common',
     initialState,
     reducers: {
-        increment: (state) => {
-            state.value += 1
-        },
-        decrement: (state) => {
-            state.value -= 1
-        },
-        incrementByAmount: (state, action: PayloadAction<number>) => {
-            state.value += action.payload;
-        },
-
         // login status
         updateLogin: (state, action: PayloadAction<boolean>) => {
             state.isLogin = action.payload;
@@ -87,25 +76,29 @@ export const CommonSlice = createSlice({
         updateLoadingStatus: (state, action: PayloadAction<boolean>) => {
             state.isLoading = action.payload;
         },
+
+        // for navigation
+        updateNavigationTo: (state, action: PayloadAction<string>) => {
+            state.navigationTo = action.payload;
+        },
+
     },
 })
 
 // Action creators are generated for each case reducer function
 export const {
-  increment,
-  decrement,
-  incrementByAmount,
+    updateLogin,
 
-  updateLogin,
+    updateCartItem,
+    addToCart,
+    removeFromCart,
 
-  updateCartItem,
-  addToCart,
-  removeFromCart,
+    updateStoreItems,
 
-  updateStoreItems,
+    updateLoadingStatus,
 
-  updateLoadingStatus,
-  
+    updateNavigationTo,
+
 } = CommonSlice.actions;
 
 export default CommonSlice.reducer;

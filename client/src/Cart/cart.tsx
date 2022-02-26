@@ -6,7 +6,7 @@ import CartItem from "../Item/CartItem";
 import { Wrapper } from "./Cart.styles";
 
 // redux
-import { RootState } from '../Store/Common/CommonStore';
+import { RootState } from '../Store/ReduxStore';
 import { useSelector } from 'react-redux';
 
 // types

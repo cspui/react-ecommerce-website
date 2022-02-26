@@ -1,7 +1,16 @@
 const functions = require("firebase-functions");
 
-// const admin = require('firebase-admin');
-// admin.initializeApp(functions.config().firebase);
+const admin = require("firebase-admin");
+
+// enable for local firebase serve
+// const serviceAccount = require("../ecommerce-backend-firebase-adminsdk.json");
+
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount)
+// });
+
+
+admin.initializeApp();
 
 
 // ######### Cross platform firebase.json lint command #######
@@ -22,45 +31,7 @@ const apiRoute = require("./api/routes/data");
 
 app.use("/api", apiRoute);
 
-// ##### not needed to serve index.html anymore for a single page app (configured firebase.json) #####
-// const path = require('path');
-// app.use(express.static(path.join(__dirname, 'build')));
-
-// app.get('/*', (req, res) => {
-//     res.set('Cache-control', 'public, max-age=300, s-maxage=600');
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
-
-
-// need to have inclucde full source (/api/...) to access it from firebase hosting
-// app.get('/data', (req, res) => {
-//     console.log('aaaaa')
-//     res.set('Cache-control', 'public, max-age=300, s-maxage=600')
-//     res.json('data')
-// });
-
-// app.get('/api/data', (req, res) => {
-//     console.log('bbbbb')
-//     res.set('Cache-control', 'public, max-age=300, s-maxage=600')
-//     res.json('data /api/data')
-// });
-
-// const router = require("express").Router();
-
-// router.get("/api", (req, res) => {
-//     res.send(`here is /api`)
-//   })
-  
-//   router.get("/data", (req, res) => {
-//     res.send(`here is /data`)
-//   })
-  
-//   router.get("/", (req, res) => {
-//     res.send(`here is /`)
-//   })
-
-// app.use("/api", router)
-
+// not needed to serve index.html for a single page app (configured firebase.json)
 
 exports.app = functions.https.onRequest(app);
 

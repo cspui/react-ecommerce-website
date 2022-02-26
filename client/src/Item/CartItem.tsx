@@ -6,7 +6,7 @@ import { Wrapper } from "./CartItem.styles";
 
 // redux
 import { useDispatch } from 'react-redux';
-import { addToCart, removeFromCart } from "../Store/Common/CommonSlice";
+import { addToCart, removeFromCart } from "../Store/CommonSlice";
 
 // types
 import { CartItemProps } from '../Types/PropsType';

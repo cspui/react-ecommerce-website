@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,9 +12,27 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
 import { KeyboardArrowLeftSharp } from '@material-ui/icons';
+
+// navigation
 import { useParams, useNavigate } from 'react-router-dom';
+
+// import auth from firebase
+import { auth } from '../Firebase/Firebase';
+import { signInWithEmailAndPassword, AuthErrorCodes } from "firebase/auth";
+
+// import firestore
+import { firestore } from '../Firebase/Firebase';
+import Collections from '../Constant/Collection';
+import { collection, addDoc, getDoc, doc } from "firebase/firestore";
+
+// store
+import { RootState } from '../Store/ReduxStore';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUser, } from '../Store/UserSlice';
+import { updateLogin, updateLoadingStatus, updateNavigationTo } from '../Store/CommonSlice';
+
+
 
 function Copyright() {
   return (
@@ -56,11 +74,80 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const { navigationTo } = useSelector((state: RootState) => state.common);
+
+
+  const signin = async () => {
+    // validate input
+    if (email.length < 1) {
+      alert('Please enter your email !');
+      return;
+    }
+    if (password.length < 1) {
+      alert('Please enter your password !');
+      return;
+    }
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(async (credentials) => {
+        const user = credentials.user;
+
+        // read user docs from firestore
+        const userRef = doc(firestore, Collections.User, user.uid);
+        const userDoc = await getDoc(userRef);
+        const userData = userDoc.data();
+
+        // store to user store
+        const userStore = {
+          uid: user.uid,
+          email: email,
+          fname: userData ? userData.fname : '',
+          lname: userData ? userData.lname : '',
+          phoneNumber: "",
+          refreshToken: "",
+          admin: false,
+          address: "",
+        }
+
+        dispatch(setUser(userStore));
+
+        // update login status
+        dispatch(updateLogin(true));
+
+        // navigate to home page or where it is from
+        if (navigationTo) {
+          navigate(navigationTo);
+          dispatch(updateNavigationTo(''));
+        } else {
+          navigate('/');
+        }
+
+      })
+      .catch((error) => {
+        console.log(error)
+
+        if (error.code == AuthErrorCodes.INVALID_EMAIL) {
+          alert('Invalid email');
+        }
+        else if (error.code == AuthErrorCodes.USER_DELETED) {
+          alert('User not found');
+        }
+        else {
+          alert('Unknown error');
+        }
+      });
+  };
+
 
   return (
     <Container component="main" maxWidth="xs">
       <Button startIcon={<KeyboardArrowLeftSharp />} className={classes.backButton} onClick={() => navigate(-1)}>Back</Button>
-      <CssBaseline />
+
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -70,37 +157,39 @@ export default function Login() {
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
-            variant="outlined"
-            margin="normal"
             required
             fullWidth
-            id="email"
+            variant="outlined"
+            margin="normal"
             label="Email Address"
             name="email"
             autoComplete="email"
             autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
-            variant="outlined"
-            margin="normal"
             required
             fullWidth
+            variant="outlined"
+            margin="normal"
             name="password"
             label="Password"
             type="password"
-            id="password"
             autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={signin}
           >
             Sign In
           </Button>

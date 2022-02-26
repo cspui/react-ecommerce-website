@@ -1,4 +1,5 @@
 import React from 'react';
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -19,12 +20,24 @@ import Menu from '@material-ui/core/Menu';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 
+// navigation
 import { useNavigate } from "react-router-dom";
 
-
+// type
 import { ChildrenProps } from "../Types/PropsType";
 
+// styles
 import { navBarStyles } from './NavBar.styles';
+
+// import auth from firebase
+import { auth } from '../Firebase/Firebase';
+import { signOut } from "firebase/auth";
+
+// store
+import { RootState } from '../Store/ReduxStore';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearUser, } from '../Store/UserSlice';
+import { updateLogin, updateLoadingStatus, updateNavigationTo } from '../Store/CommonSlice';
 
 
 function BackToTop(props: ChildrenProps) {
@@ -59,15 +72,37 @@ function BackToTop(props: ChildrenProps) {
 
 const NavBar = (props: ChildrenProps) => {
   const classes = navBarStyles();
-  const [auth, setAuth] = React.useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { isLogin } = useSelector((state: RootState) => state.common);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
   const open = Boolean(anchorEl);
 
-  const navigate = useNavigate();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAuth(event.target.checked);
-  };
+  const logout = async () => {
+    try {
+      await signOut(auth);
+
+      // clear user store
+      dispatch(clearUser());
+
+      // change login status
+      dispatch(updateLogin(false));
+
+      // redirect to login page
+      navigate('/', { replace: true });
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setAuth(event.target.checked);
+  // };
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -77,6 +112,7 @@ const NavBar = (props: ChildrenProps) => {
     setAnchorEl(null);
   };
 
+
   return (
     <React.Fragment>
       <AppBar>
@@ -84,9 +120,11 @@ const NavBar = (props: ChildrenProps) => {
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
+
           <Typography variant="h6" className={classes.title} onClick={() => navigate('/')}>
             Logo
           </Typography>
+
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -100,7 +138,8 @@ const NavBar = (props: ChildrenProps) => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-          {auth ? (
+
+          {isLogin ? (
             <div>
               <IconButton
                 aria-label="account of current user"
@@ -130,7 +169,7 @@ const NavBar = (props: ChildrenProps) => {
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={() => {
                   handleClose();
-                  setAuth(!auth);
+                  logout();
                 }}>Logout</MenuItem>
               </Menu>
             </div>
@@ -139,7 +178,6 @@ const NavBar = (props: ChildrenProps) => {
             (
               <Button color='secondary' onClick={() => {
                 navigate('/login');
-                setAuth(!auth)
               }}>Login</Button>
             )}
         </Toolbar>

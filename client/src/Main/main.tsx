@@ -21,9 +21,50 @@ import { StyledButton } from "../App.styles";
 import { CartItemType } from '../Types/CartItemType';
 
 // redux
-import { RootState } from '../Store/Common/CommonStore';
+import { RootState } from '../Store/ReduxStore';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/Common/CommonSlice';
+import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/CommonSlice';
+
+
+/*
+    ============= TODO ===============
+    1. firebase auth create user and ui for login/signup (email/password) (✅)
+    2. backend api signup and store data in firestore (✅)
+    3. firestore and sample data
+    4. cart checkout ui & stripe payment FPX
+    5. JWT auth
+    6. guarded routes for restricted access
+    7. middleware for authentication request in backend
+    8. firebase security rules for restricted access to data (✅ need more test)
+        - restrict read access to User collection to itself (uid) but allow write access to anyone (✅)
+    9. store state when reload page
+    10. more signup/login options (google, facebook, etc) 
+    11. password reset & verification (email/phone)
+
+    unassigned:
+    Admin custom claim or role
+    error modal popup
+    profile page and functions
+    comments and ratings
+    settings ?
+    notification sys
+    search func
+    menu
+
+
+    POST Development:
+    image upload (firestore bucket ? store in aws s3 ?)
+    admin functions (batch upload product etc)
+    styling
+
+
+    Explore:
+    createAsyncThunk
+
+
+    last: host a node server using google app engine
+    https://cloud.google.com/appengine/docs/standard/nodejs/building-app
+*/
 
 
 const getProducts = async (): Promise<CartItemType[]> =>

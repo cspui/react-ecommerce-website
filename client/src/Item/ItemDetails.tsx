@@ -7,7 +7,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Rating from '@material-ui/lab/Rating';
 
 // redux
-import { RootState } from '../Store/Common/CommonStore';
+import { RootState } from '../Store/ReduxStore';
 import { useSelector, useDispatch } from 'react-redux';
 import { CartItemType } from '../Types/CartItemType';
 

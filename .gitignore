@@ -14,6 +14,8 @@
 
 # firebase cache
 /.firebase
+# firebase admin sdk secret
+/ecommerce-backend-firebase-adminsdk.json
 
 # misc
 .DS_Store

@@ -16,7 +16,7 @@ import { itemStyles } from "./Item.styles";
 
 // redux
 import { useDispatch } from 'react-redux';
-import { addToCart } from "../Store/Common/CommonSlice";
+import { addToCart } from "../Store/CommonSlice";
 
 // types
 import { ItemProps } from '../Types/PropsType'

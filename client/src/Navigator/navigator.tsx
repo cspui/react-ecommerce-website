@@ -19,7 +19,7 @@ import ItemDetails from '../Item/ItemDetails';
 import Test from '../test';
 
 // redux
-import { RootState } from '../Store/Common/CommonStore';
+import { RootState } from '../Store/ReduxStore';
 import { useSelector, useDispatch } from 'react-redux';
 
 // components

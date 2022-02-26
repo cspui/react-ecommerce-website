@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,9 +12,35 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
 import { KeyboardArrowLeftSharp } from '@material-ui/icons';
+
+// navigation
 import { useParams, useNavigate } from 'react-router-dom';
+
+
+import ApiCall from '../Constant/ApiCall';
+import API from '../Constant/API';
+
+
+// import auth from firebase
+import { auth } from '../Firebase/Firebase';
+import { createUserWithEmailAndPassword, AuthErrorCodes } from "firebase/auth";
+
+// import firestore
+import { firestore } from '../Firebase/Firebase';
+import Collections from '../Constant/Collection';
+import { collection, addDoc } from "firebase/firestore";
+
+// store
+import { RootState } from '../Store/ReduxStore';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUser, } from '../Store/UserSlice';
+import { updateLogin, updateLoadingStatus, updateNavigationTo } from '../Store/CommonSlice';
+
+
+// html textinput autofill
+// https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
+
 
 const Copyright = () => {
   return (
@@ -56,11 +82,139 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [fname, setFname] = useState('');
+  const [lname, setLname] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const { navigationTo } = useSelector((state: RootState) => state.common);
+
+
+  const signUpUser = () => {
+    // validate input
+    if (fname.length < 1) {
+      alert('Please enter your first name !');
+      return;
+    }
+    if (lname.length < 1) {
+      alert('Please enter your last name !');
+      return;
+    }
+    if (email.length < 1) {
+      alert('Please enter your email !');
+      return;
+    }
+    if (password.length < 1) {
+      alert('Please enter your password !');
+      return;
+    }
+
+    console.log(fname, lname, email, password);
+
+    // call api
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log('NewUser', userCredential, user);
+
+        // save user data to firestore
+        const body = {
+          uid: user.uid,
+          fname: fname,
+          lname: lname,
+          email: email,
+        }
+
+        ApiCall.POST(API.signup, body).then(
+          (res) => {
+            console.log('Signup', res);
+          }
+        ).catch(
+          (err) => {
+            console.log('Signup', err);
+          }
+        )
+
+        // save data to current user store 
+        const userData = {
+          uid: user.uid,
+          email: email,
+          fname: fname,
+          lname: lname,
+          phoneNumber: "",
+          refreshToken: "",
+          admin: false,
+          address: "",
+        }
+
+        dispatch(setUser(userData));
+
+        // update login status, role ?
+        dispatch(updateLogin(true));
+
+        // navigate to home page or where it is from
+        if (navigationTo) {
+          navigate(navigationTo);
+          dispatch(updateNavigationTo(''));
+        } else {
+          navigate('/');
+        }
+
+        // V9 modular approach
+        // try {
+        //   const docRef = await addDoc(collection(firestore, Collections.User), body);
+        //   console.log("User Document written with ID: ", docRef.id);
+        // } catch (e) {
+        //   console.error("Error adding user document: ", e);
+        // }
+
+        // v8 namespaced approach
+        // firestore.app.firestore().collection(Collections.User).doc(user.uid).set({
+        //   fname: fname,
+        //   lname: lname,
+        //   email: email,
+        //   password: password,
+        // })
+        // .then(() => {
+        //   console.log('User saved to db');
+        // })
+        // .catch((error: any) => {
+        //   console.log('Error saving user to db', error);
+        // });
+
+      })
+      .catch((error) => {
+        console.log(error)
+
+        if (error.code == AuthErrorCodes.EMAIL_EXISTS) {
+          alert('Email already in use');
+        }
+        else if (error.code == AuthErrorCodes.INVALID_EMAIL) {
+          alert('Invalid email');
+        }
+        else if (error.code == AuthErrorCodes.WEAK_PASSWORD) {
+          alert('Weak password');
+        }
+        else {
+          alert('Unknown error');
+        }
+      });
+  }
+
 
   return (
     <Container component="main" maxWidth="xs">
-      <Button startIcon={<KeyboardArrowLeftSharp />} className={classes.backButton} onClick={() => navigate(-1)}>Back</Button>
-      <CssBaseline />
+      <Button
+        startIcon={<KeyboardArrowLeftSharp />}
+        className={classes.backButton}
+        onClick={() => navigate(-1)}
+      >
+        Back
+      </Button>
+      {/* <CssBaseline /> */}
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -72,48 +226,51 @@ export default function SignUp() {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
                 required
                 fullWidth
-                id="firstName"
+                name="firstName"
+                variant="outlined"
                 label="First Name"
+                autoComplete="given-name"
                 autoFocus
+                onChange={(e) => setFname(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                variant="outlined"
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
                 name="lastName"
-                autoComplete="lname"
+                variant="outlined"
+                label="Last Name"
+                autoComplete="family-name"
+                value={lname}
+                onChange={(e) => setLname(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
                 name="email"
+                variant="outlined"
+                label="Email Address"
                 autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant="outlined"
                 required
                 fullWidth
                 name="password"
+                variant="outlined"
                 label="Password"
                 type="password"
-                id="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -124,17 +281,18 @@ export default function SignUp() {
             </Grid>
           </Grid>
           <Button
-            type="submit"
             fullWidth
+            // type="submit"
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={signUpUser}
           >
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link variant="body2" onClick={() => navigate('/login')}>
+              <Link variant="body2" onClick={() => navigate("/login")}>
                 Already have an account? Sign in
               </Link>
             </Grid>
