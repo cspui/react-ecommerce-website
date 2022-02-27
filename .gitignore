@@ -17,6 +17,9 @@
 # firebase admin sdk secret
 /ecommerce-backend-firebase-adminsdk.json
 
+# env
+/*/.env
+
 # misc
 .DS_Store
 .env.local
