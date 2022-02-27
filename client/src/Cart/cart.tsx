@@ -14,7 +14,7 @@ import { CartItemType } from '../Types/CartItemType';
 
 
 const Cart = () => {
-    const { storeItems } = useSelector((state: RootState) => state.common);
+    const { cartItems } = useSelector((state: RootState) => state.common);
 
     const calculateTotal = (items: CartItemType[]) =>
         items.reduce((ack: number, item) => ack + item.amount * item.price, 0);
@@ -22,14 +22,14 @@ const Cart = () => {
     return (
         <Wrapper>
             <h2>Your shopping cart</h2>
-            {storeItems.length === 0 ? <p>No items in cart.</p> : null}
-            {storeItems.map(item => (
+            {cartItems.length === 0 ? <p>No items in cart.</p> : null}
+            {cartItems.map(item => (
                 <CartItem
                     key={item.id}
                     item={item}
                 />
             ))}
-            <h2>Total: ${calculateTotal(storeItems).toFixed(2)}</h2>
+            <h2>Total: ${calculateTotal(cartItems).toFixed(2)}</h2>
         </Wrapper>
     )
 }

@@ -30,7 +30,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     ============= TODO ===============
     1. firebase auth create user and ui for login/signup (email/password) (✅)
     2. backend api signup and store data in firestore (✅)
-    3. firestore and sample data
+    3. firestore and sample data (✅)
     4. cart checkout ui & stripe payment FPX
     5. JWT auth
     6. Guarded routes for restricted access to page
@@ -40,6 +40,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     9. store state when reload page
     10. more signup/login options (google, facebook, etc) 
     11. password reset & verification (email/phone)
+    12. Pages of items (page 1, page 2, page 3, etc)
 
     unassigned:
     Admin custom claim or role
@@ -73,26 +74,28 @@ const getProducts = async (): Promise<CartItemType[]> =>
 
 const Main = () => {
     const dispatch = useDispatch();
-    
+
     const { cartItems: cartItem } = useSelector((state: RootState) => state.common);
+    const { storeItems } = useSelector((state: RootState) => state.common);
 
     const [cartOpen, setCartOpen] = useState(false);
-    
+
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const defaultCartPosition = { x: 0, y: 0 };
-    
-    const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
-    
-    useEffect(() => {
-        if (data)
-            dispatch(updateStoreItems(data));
-        console.log(data);
-    }, [data])
 
-    useEffect(() => {
-        // update loading status
-        dispatch(updateLoadingStatus(isLoading));
-    }, [isLoading])
+    // const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
+
+    // useEffect(() => {
+    //     if (data) {
+    //         // dispatch(updateStoreItems(data));
+    //         console.log(data);
+    //     }
+    // }, [data])
+
+    // useEffect(() => {
+    //     // update loading status
+    //     dispatch(updateLoadingStatus(isLoading));
+    // }, [isLoading])
 
 
     const getTotalItems = (items: CartItemType[]) => items.reduce((acc: number, items) => acc + items.amount, 0);
@@ -138,8 +141,6 @@ const Main = () => {
         }
     }
 
-    if (error) return <div> something wrong </div>
-
     return (
         <>
             <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)} >
@@ -162,7 +163,7 @@ const Main = () => {
             </Draggable>
 
             <Grid container spacing={3}>
-                {data?.map(item => (
+                {storeItems?.map(item => (
                     <Grid item key={item.id} xs={12} sm={6} md={4} lg={3} xl={2}>
                         <Item item={item} />
                     </Grid>

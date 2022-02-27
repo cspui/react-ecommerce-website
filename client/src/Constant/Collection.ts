@@ -1,7 +1,7 @@
 const Collections = {
     User: 'User',
 
-
+    Items: 'Items',
 
 };
 

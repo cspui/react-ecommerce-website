@@ -3,8 +3,8 @@ import { CartItemType } from '../Types/CartItemType';
 
 export interface CommonState {
     isLogin: boolean,                                     // is user logged in
-    cartItems: CartItemType[] | [],                       // items in the cart                                
-    storeItems: CartItemType[] | [],                      // items show in the store
+    cartItems: CartItemType[],                       // items in the cart                                
+    storeItems: CartItemType[],                      // items show in the store
     isLoading: boolean,                                   // is the data loading
     navigationTo: string,                                 // navigation to the next page
 }
@@ -13,7 +13,7 @@ const initialState: CommonState = {
     isLogin: false,
     cartItems: [],
     storeItems: [],
-    isLoading: true,
+    isLoading: false,
     navigationTo: '',
 }
 
