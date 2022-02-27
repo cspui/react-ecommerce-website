@@ -34,6 +34,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     4. cart checkout ui & stripe payment FPX
     5. JWT auth
     6. Guarded routes for restricted access to page
+        - nested scroll to top on route change
     7. middleware for authentication request in backend
     8. firebase security rules for restricted access to data (✅ need more test)
         - restrict read access to User collection to itself (uid) but allow write access to anyone (✅)
