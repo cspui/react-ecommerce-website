@@ -12,16 +12,6 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
-// const firebaseConfig = {
-//     apiKey: "AIzaSyDNx8y0FqZlbKohfh7w2srzRUUHCCy5p7s",
-//     authDomain: "ecommerce-backend-d2cf4.firebaseapp.com",
-//     projectId: "ecommerce-backend-d2cf4",
-//     storageBucket: "ecommerce-backend-d2cf4.appspot.com",
-//     messagingSenderId: "286706650191",
-//     appId: "1:286706650191:web:e7ccb7b5a980bc421aee3a",
-//     measurementId: "G-976YKHRJKX"
-// };
-
 const app = initializeApp(firebaseConfig);
 
 export default app;
