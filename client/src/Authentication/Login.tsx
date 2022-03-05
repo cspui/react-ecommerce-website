@@ -32,6 +32,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUser, } from '../Store/UserSlice';
 import { updateLogin, updateLoadingStatus, updateNavigationTo } from '../Store/CommonSlice';
 
+// hooks
+import useLocalState from '../Hooks/useLocalState';
 
 
 function Copyright() {
@@ -76,8 +78,8 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useLocalState('loginEmail', '');
+  const [password, setPassword] = useLocalState('loginPassword', '');
 
   const { navigationTo } = useSelector((state: RootState) => state.common);
 

@@ -33,7 +33,13 @@ app.use("/api", apiRoute);
 
 // not needed to serve index.html for a single page app (configured firebase.json)
 
-exports.app = functions.https.onRequest(app);
+// runWith doc: https://firebase.google.com/docs/functions/manage-functions#min-max-instances
+exports.app = functions
+  .runWith({
+    memory: "512MB",
+    timeoutSeconds: 120
+  })
+  .https.onRequest(app);
 
 
 // test cloud functions

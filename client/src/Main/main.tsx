@@ -30,6 +30,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     ============= TODO ===============
     1. firebase auth create user and ui for login/signup (email/password) (✅)
     2. backend api signup and store data in firestore (✅)
+        - store cart items in firestore ?
     3. firestore and sample data (✅)
     4. cart checkout ui & stripe payment FPX
     5. JWT auth
@@ -38,9 +39,11 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     7. middleware for authentication request in backend
     8. firebase security rules for restricted access to data (✅ need more test)
         - restrict read access to User collection to itself (uid) but allow write access to anyone (✅)
-    9. store state when reload page
+    9. store state when reload page (✅)
+        - need research on refresh token for user signin session and status
     10. more signup/login options (google, facebook, etc) 
     11. password reset & verification (email/phone)
+        - confirm password on signup ui + func
     12. Pages of items (page 1, page 2, page 3, etc)
 
     unassigned:

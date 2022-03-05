@@ -37,6 +37,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUser, } from '../Store/UserSlice';
 import { updateLogin, updateLoadingStatus, updateNavigationTo } from '../Store/CommonSlice';
 
+// hooks
+import useLocalState from '../Hooks/useLocalState';
+
 
 // html textinput autofill
 // https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
@@ -84,10 +87,11 @@ export default function SignUp() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [fname, setFname] = useState('');
-  const [lname, setLname] = useState('');
-  const [email, setEmail] = useState('');
+  const [fname, setFname] = useLocalState('signupFname', '');
+  const [lname, setLname] = useLocalState('signupLname', '');
+  const [email, setEmail] = useLocalState('signupEmail', '');
   const [password, setPassword] = useState('');
+  // todo confirm password
 
   const { navigationTo } = useSelector((state: RootState) => state.common);
 

@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CartItemType } from '../Types/CartItemType';
 
 export interface CommonState {
-    isLogin: boolean,                                     // is user logged in
+    isLogin: boolean,                                // is user logged in
     cartItems: CartItemType[],                       // items in the cart                                
     storeItems: CartItemType[],                      // items show in the store
-    isLoading: boolean,                                   // is the data loading
-    navigationTo: string,                                 // navigation to the next page
+    isLoading: boolean,                              // is the data loading
+    navigationTo: string,                            // navigation to the next page
 }
 
 const initialState: CommonState = {
@@ -17,17 +17,43 @@ const initialState: CommonState = {
     navigationTo: '',
 }
 
+// localstorage get items for each state
+if (typeof window !== undefined && window.localStorage) {
+    const saved = window.localStorage.getItem('isLogin');
+    if (saved) {
+        initialState.isLogin = JSON.parse(saved);
+    }
+    const saved2 = window.localStorage.getItem('cartItems');
+    if (saved2) {
+        initialState.cartItems = JSON.parse(saved2);
+    }
+    const saved3 = window.localStorage.getItem('storeItems');
+    if (saved3) {
+        initialState.storeItems = JSON.parse(saved3);
+    }
+    const saved4 = window.localStorage.getItem('isLoading');
+    if (saved4) {
+        initialState.isLoading = JSON.parse(saved4);
+    }
+    const saved5 = window.localStorage.getItem('navigationTo');
+    if (saved5) {
+        initialState.navigationTo = JSON.parse(saved5);
+    }
+}
+
 export const CommonSlice = createSlice({
     name: 'Common',
     initialState,
     reducers: {
         // login status
         updateLogin: (state, action: PayloadAction<boolean>) => {
+            localStorage.setItem('isLogin', JSON.stringify(action.payload));
             state.isLogin = action.payload;
         },
 
         // for items in Cart
         updateCartItem: (state, action: PayloadAction<CartItemType[]>) => {
+            localStorage.setItem('cartItems', JSON.stringify(action.payload));
             state.cartItems = action.payload;
         },
         addToCart: (state, action: PayloadAction<CartItemType>) => {
@@ -39,10 +65,12 @@ export const CommonSlice = createSlice({
                         ? { ...item, amount: item.amount + 1 }
                         : item
                 ));
-                return
+                localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+                return;
             }
 
             state.cartItems = [...state.cartItems, { ...action.payload, amount: 1 }];
+            localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
         },
         removeFromCart: (state, action: PayloadAction<number>) => {
             // typescript recude bugged
@@ -65,20 +93,26 @@ export const CommonSlice = createSlice({
                     state.cartItems[index].amount -= 1;
                 }
             }
+            localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
         },
 
         // for items display in store
         updateStoreItems: (state, action: PayloadAction<CartItemType[]>) => {
+            localStorage.setItem('storeItems', JSON.stringify(action.payload));
+            // set expired time to 1 day
+            localStorage.setItem('refreshStoreItemIn', JSON.stringify(new Date().getTime() + 86400000));
             state.storeItems = action.payload;
         },
 
         // for loading status
         updateLoadingStatus: (state, action: PayloadAction<boolean>) => {
+            localStorage.setItem('isLoading', JSON.stringify(action.payload));
             state.isLoading = action.payload;
         },
 
         // for navigation
         updateNavigationTo: (state, action: PayloadAction<string>) => {
+            localStorage.setItem('navigationTo', JSON.stringify(action.payload));
             state.navigationTo = action.payload;
         },
 

@@ -31,6 +31,22 @@ const App = () => {
 
   const readStoreItems = async () => {
     dispatch(updateLoadingStatus(true));
+
+    // check for expiration
+    if (window.localStorage.getItem('refreshStoreItemIn') !== null) {
+      const refreshStoreItemIn = parseInt(window.localStorage.getItem('refreshStoreItemIn') as string);
+      const now = new Date().getTime();
+      // not expired
+      if (now - refreshStoreItemIn < 0) {
+        // check local storage before reading from firestore
+        if (window.localStorage.getItem('storeItems') !== null) {
+          console.log('read data from cache');
+          dispatch(updateLoadingStatus(false));
+          return;
+        }
+      }
+    }
+    
     try {
       // read store items from firestore
       const collectionRef = collection(firestore, Collections.Items);
@@ -68,7 +84,7 @@ const App = () => {
       dispatch(updateStoreItems(allItems));
       dispatch(updateLoadingStatus(false));
 
-      // // TESZTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+      // // TEST todo TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 
       // // Get a new write batch
       // // const batch = writeBatch(firestore);
