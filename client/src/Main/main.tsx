@@ -43,7 +43,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
         - need research on refresh token for user signin session and status
     10. more signup/login options (google, facebook, etc) 
     11. password reset & verification (email/phone)
-        - confirm password on signup ui + func
+        - confirm password (rewrite) on signup ui + func (✅)
     12. Pages of items (page 1, page 2, page 3, etc)
 
     unassigned:

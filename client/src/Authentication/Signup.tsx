@@ -91,7 +91,7 @@ export default function SignUp() {
   const [lname, setLname] = useLocalState('signupLname', '');
   const [email, setEmail] = useLocalState('signupEmail', '');
   const [password, setPassword] = useState('');
-  // todo confirm password
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const { navigationTo } = useSelector((state: RootState) => state.common);
 
@@ -112,6 +112,14 @@ export default function SignUp() {
     }
     if (password.length < 1) {
       alert('Please enter your password !');
+      return;
+    }
+    if (confirmPassword.length < 1) {
+      alert('Please confirm your password !');
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert('Confirm password do not match !');
       return;
     }
 
@@ -237,6 +245,7 @@ export default function SignUp() {
                 label="First Name"
                 autoComplete="given-name"
                 autoFocus
+                value={fname}
                 onChange={(e) => setFname(e.target.value)}
               />
             </Grid>
@@ -275,6 +284,19 @@ export default function SignUp() {
                 autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                variant="outlined"
+                label="Confirm Password"
+                type="password"
+                autoComplete="new-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
