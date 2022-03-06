@@ -25,14 +25,14 @@ import { ItemProps } from '../Types/PropsType'
 const Item: React.FC<ItemProps> = ({ item }) => {
     const classes = itemStyles();
     const dispatch = useDispatch();
-
     const navigate = useNavigate();
+
 
     return (
         <Card className={classes.root}>
             <CardActionArea className={classes.media} onClick={() => navigate(`/itemdetails/${item.id}`)}>
                 <CardMedia
-                    draggable="false" 
+                    draggable="false"
                     component="img"
                     alt={item.title}
                     height="200"
@@ -43,7 +43,7 @@ const Item: React.FC<ItemProps> = ({ item }) => {
                     <Typography gutterBottom variant="h5">
                         {item.title}
                     </Typography>
-                    
+
                 </CardContent>
             </CardActionArea>
 

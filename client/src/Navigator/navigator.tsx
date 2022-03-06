@@ -18,26 +18,16 @@ import SignUp from '../Authentication/Signup';
 import ItemDetails from '../Item/ItemDetails';
 import Test from '../test';
 
-// redux
-import { RootState } from '../Store/ReduxStore';
-import { useSelector, useDispatch } from 'react-redux';
-
 // components
 import NavBar from '../Component/NavBar';
 import ScrollToTop from '../Component/ScrollToTop';
 
-// mui
-import { LinearProgress } from '@material-ui/core';
-
 
 const Navigator = () => {
-    const { isLoading } = useSelector((state: RootState) => state.common);
 
     return (
         <BrowserRouter>
             <NavBar />
-
-            {isLoading && <LinearProgress />}
 
             <ScrollToTop >
                 <Routes>

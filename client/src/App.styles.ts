@@ -20,6 +20,20 @@ export const StyledButton = styled(IconButton)`
 
 export const appStyles = makeStyles((theme: Theme) =>
     createStyles({
+        '@global': {
+            '*::-webkit-scrollbar': {
+                width: 8
+            },
+            '*::-webkit-scrollbar-track': {
+                backgroundColor: 'transparent'
+            },
+            '*::-webkit-scrollbar-thumb': {
+                backgroundColor: 'rgba(160, 160, 160, 0.788)',
+                borderRadius: 12,
+                border: '6 solid transparent',
+                backgroundClip: 'content-box',
+            }
+        },
         root: {
             marginLeft: 0,
             marginRight: 0,

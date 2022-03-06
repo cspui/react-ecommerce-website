@@ -9,6 +9,7 @@ import Rating from '@material-ui/lab/Rating';
 // redux
 import { RootState } from '../Store/ReduxStore';
 import { useSelector, useDispatch } from 'react-redux';
+import { addToCart } from "../Store/CommonSlice";
 import { CartItemType } from '../Types/CartItemType';
 
 // icons
@@ -21,16 +22,16 @@ import { itemDetailsStyles } from './ItemDetails.styles';
 
 const ItemDetails = () => {
   const classes = itemDetailsStyles();
-
-  const { storeItems } = useSelector((state: RootState) => state.common);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const id = useParams().id;
 
-  const navigate = useNavigate();
+  const { storeItems } = useSelector((state: RootState) => state.common);
 
   const [currItem, setCurrItem] = useState<CartItemType | undefined>();
-
   const [quantity, setQuantity] = useState(0);
+
 
   useEffect(() => {
     if (id == undefined || storeItems == undefined) {
@@ -60,26 +61,29 @@ const ItemDetails = () => {
             </Grid>
 
             <Grid container className={classes.content}>
-              <Grid item xs={12} sm={12} md={6} lg={5} className={classes.content}>
+              <Grid item xs={12} sm={12} md={7} lg={5} className={classes.content}>
                 <Paper style={{
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
                   maxWidth: '300px',
                   maxHeight: '300px',
-                  width: '300px',
-                  height: '300px',
+                  width: '100%',
+                  height: 'auto'
                 }}>
                   <img src={currItem ? currItem.image : ''} alt={currItem ? currItem.title : ''}
                     style={{
                       maxWidth: '300px',
                       maxHeight: '300px',
+                      width: '100%',
+                      height: 'auto'
                     }}
+                    loading="lazy"
                   />
                 </Paper>
               </Grid>
 
-              <Grid item xs={12} sm={12} md={6} lg={7} className={classes.content}>
+              <Grid item xs={12} sm={12} md={5} lg={7} className={classes.content}>
                 <Typography variant="h6" className={classes.content_small}>
                   RM {currItem ? currItem.price.toFixed(2) : 0}
                 </Typography>
@@ -104,7 +108,15 @@ const ItemDetails = () => {
 
                 </Grid>
 
-                <Button startIcon={<AddShoppingCartIcon />} className={classes.addToCartButton} >Add to cart</Button>
+                <Button
+                  startIcon={<AddShoppingCartIcon />}
+                  className={classes.addToCartButton}
+                  onClick={() => {
+                    if (currItem)
+                      for (let i = 0; i < quantity; i++) {
+                        dispatch(addToCart(currItem))
+                      }
+                  }}>Add to cart</Button>
               </Grid>
             </Grid>
 

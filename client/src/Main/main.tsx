@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { useState } from "react";
 import { useQuery } from "react-query";
+import Draggable from 'react-draggable';
 
 // components
-import { Drawer } from "@material-ui/core";
-import { LinearProgress } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
+import {
+    Drawer,
+    Grid,
+    Badge,
+} from "@material-ui/core";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
-import { Badge } from "@material-ui/core";
 
 import Item from "../Item/Item";
 import Cart from '../Cart/Cart';
-
-import Draggable from 'react-draggable';
 
 // styles
 import { StyledButton } from "../App.styles";
@@ -55,6 +55,8 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     Notification sys
     Search func product
     Menu side bar
+    Isomorphic page SSR, SEO friendly
+    Code splitting / lazy imports
 
 
     POST Development:
@@ -85,7 +87,7 @@ const Main = () => {
     const [cartOpen, setCartOpen] = useState(false);
 
     const [isDragging, setIsDragging] = useState<boolean>(false);
-    const defaultCartPosition = { x: 0, y: 0 };
+    const defaultCartIconPosition = { x: 0, y: 0 };
 
     // const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
 
@@ -101,44 +103,18 @@ const Main = () => {
     //     dispatch(updateLoadingStatus(isLoading));
     // }, [isLoading])
 
+    const closeCart = () => {
+        setCartOpen(false);
+    }
 
     const getTotalItems = (items: CartItemType[]) => items.reduce((acc: number, items) => acc + items.amount, 0);
 
-    // const handleAddToCart = (clickedItem: CartItemType) => {
-    //     setCartItems(prev => {
-    //         const isItemInCart = prev.find(item => item.id === clickedItem.id)
-
-    //         if (isItemInCart) {
-    //             return prev.map(item => (
-    //                 item.id === clickedItem.id
-    //                     ? { ...item, amount: item.amount + 1 }
-    //                     : item
-    //             ));
-    //         }
-
-    //         return [...prev, { ...clickedItem, amount: 1 }]
-    //     })
-    // };
-
-    // const handleRemoveFromCart = (id: number) => {
-    //     setCartItems(prev =>
-    //         prev.reduce((ack, item) => {
-    //             if (item.id === id) {
-    //                 if (item.amount === 1) return ack;
-    //                 return [...ack, { ...item, amount: item.amount - 1 }];
-    //             } else {
-    //                 return [...ack, item];
-    //             }
-    //         }, [] as CartItemType[])
-    //     );
-    // };
-
     const eventControl = (event: { type: any; }, info: any) => {
-        if (event.type === 'mousemove' || event.type === 'touchmove') {
+        if (event.type === 'mousemove' || event.type === 'touchmove' || event.type === 'touchstart') {
             setIsDragging(true)
         }
 
-        if (event.type === 'mouseup' || event.type === 'touchend') {
+        if (event.type === 'mouseup' || event.type === 'touchend' || event.type === 'touchcancel') {
             setTimeout(() => {
                 setIsDragging(false);
             }, 100);
@@ -148,23 +124,37 @@ const Main = () => {
     return (
         <>
             <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)} >
-                <Cart />
+                <Cart closeCart={closeCart} />
             </Drawer>
 
-            <Draggable
-                defaultPosition={defaultCartPosition}
-                onDrag={eventControl}
-                onStop={eventControl}
-            >
-                <StyledButton disabled={isDragging} onClick={() => setCartOpen(true)} color='primary'>
-                    {/* may need change the icon button to Fab */}
-                    <div style={{ backgroundColor: 'rgba(253, 189, 14, 0.884)', borderRadius: 18, width: 37, height: 37, boxShadow: '1px 5px 15px 1px rgba(0,0,0,0.8)' }}>
-                        <Badge badgeContent={getTotalItems(cartItem)} color='error'>
-                            <AddShoppingCartIcon />
-                        </Badge>
-                    </div>
-                </StyledButton>
-            </Draggable>
+            <div style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
+            }}>
+                <Draggable
+                    defaultPosition={defaultCartIconPosition}
+                    onDrag={eventControl}
+                    onStop={eventControl}
+                >
+                    <StyledButton
+                        disabled={isDragging}
+                        onClick={() => setCartOpen(true)}
+                        onTouchStart={() => setCartOpen(true)}
+                        onTouchMove={() => setCartOpen(false)}
+                        color='primary'>
+                        {/* may need change the icon button to Fab */}
+                        <div style={{ backgroundColor: 'rgba(253, 189, 14, 0.884)', borderRadius: 18, width: 37, height: 37, boxShadow: '1px 5px 15px 1px rgba(0,0,0,0.8)' }}>
+                            <Badge badgeContent={getTotalItems(cartItem)} color='error'>
+                                <AddShoppingCartIcon />
+                            </Badge>
+                        </div>
+                    </StyledButton>
+                </Draggable>
+            </div>
 
             <Grid container spacing={3}>
                 {storeItems?.map(item => (

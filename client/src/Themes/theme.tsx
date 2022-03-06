@@ -4,10 +4,10 @@ import Color from "./Color";
 let Theme = createTheme({
     palette: {
         primary: {
-            main: Color.primary
+            main: Color.primaryLight,
         },
         secondary: {
-            main: Color.secondary
+            main: Color.secondaryLight
         },
     },
 });

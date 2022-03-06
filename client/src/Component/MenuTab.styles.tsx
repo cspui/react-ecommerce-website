@@ -1,27 +1,15 @@
-import styled from "styled-components";
-
-export const Wrapper = styled.aside`
-    font-family: Arial, Helvetice, sans-serif;
-    width: 500px;
-    padding: 20px;
-
-`
-
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Color from "../Themes/Color";
+import Color from '../Themes/Color';
 
-export const cartStyles = makeStyles((theme: Theme) =>
+export const menuStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            width: 400,
-            paddingLeft: theme.spacing(1),  
-            paddingRight: theme.spacing(1),
-            paddingBottom: theme.spacing(1),
-            height: '98.7%',
+            width: 350,
+            height: '100%',
             display: 'flex',
             flexDirection: 'column',
-            [theme.breakpoints.down('xs')]: {
-                width: 300,
+            [theme.breakpoints.down('sm')]: {
+                width: 250,
             },
         },
         header: {
@@ -37,28 +25,35 @@ export const cartStyles = makeStyles((theme: Theme) =>
                 backgroundColor: Color.hoverLight,
             },
         },
-        items: {
+        links: {
+            marginTop: theme.spacing(1),
+            overflow: 'auto',
+            border: '1px solid',
+            borderColor: Color.borderLight,
+            flexDirection: 'column',
+            display: 'flex',
+        },
+        link: {
+            padding: theme.spacing(1),
+            border: '1px solid',
+            borderColor: Color.borderLight,
+            borderRadius: 0,
+        },
+        logout: {
+            alignContent: 'center',
+            justifyContent: 'center',
+            display: 'flex',
+            marginTop: 'auto',
+        },
+        button: {
+            width: '100%',
             padding: theme.spacing(1),
             overflow: 'auto',
             border: '1px solid',
             borderColor: Color.borderLight,
-            borderRadius: 5,
-        },
-        bottom: {
-            padding: theme.spacing(1),
-            paddingTop: theme.spacing(2),
-            marginTop: 'auto',
-        },
-        checkout: {
-            alignContent: 'center',
-            justifyContent: 'center',
+            borderRadius: 0,
+            flexDirection: 'column',
             display: 'flex',
-        },
-        button: {
-            width: '70%',
-            marginTop: theme.spacing(1),
-            marginBottom: theme.spacing(1),
-            alignSelf: 'center',
         },
     })
 );

@@ -3,7 +3,9 @@ import React from "react";
 import CartItem from "../Item/CartItem";
 
 // styles
-import { Wrapper } from "./Cart.styles";
+import { cartStyles, Wrapper } from "./Cart.styles";
+import { Button, Typography } from "@material-ui/core";
+import { MenuOpen } from "@material-ui/icons";
 
 // redux
 import { RootState } from '../Store/ReduxStore';
@@ -11,26 +13,41 @@ import { useSelector } from 'react-redux';
 
 // types
 import { CartItemType } from '../Types/CartItemType';
+import { CartProps } from "../Types/PropsType";
 
 
-const Cart = () => {
+const Cart = (props: CartProps) => {
+    const { closeCart } = props;
+    const classes = cartStyles();
     const { cartItems } = useSelector((state: RootState) => state.common);
 
-    const calculateTotal = (items: CartItemType[]) =>
+    const calculateTotalPrice = (items: CartItemType[]) =>
         items.reduce((ack: number, item) => ack + item.amount * item.price, 0);
 
     return (
-        <Wrapper>
-            <h2>Your shopping cart</h2>
-            {cartItems.length === 0 ? <p>No items in cart.</p> : null}
-            {cartItems.map(item => (
-                <CartItem
-                    key={item.id}
-                    item={item}
-                />
-            ))}
-            <h2>Total: ${calculateTotal(cartItems).toFixed(2)}</h2>
-        </Wrapper>
+        <div className={classes.root}>
+            <div className={classes.header} onClick={closeCart}>
+                <Typography variant="h5">Your shopping cart</Typography>
+                <MenuOpen />
+            </div>
+            <div className={classes.items}>
+                {cartItems.length === 0 ? <p>No items in cart.</p> : null}
+                {cartItems.map(item => (
+                    <CartItem
+                        key={item.id}
+                        item={item}
+                    />
+                ))}
+            </div>
+            <div className={classes.bottom}>
+                <Typography variant="h5" >Total: ${calculateTotalPrice(cartItems).toFixed(2)}</Typography>
+            </div>
+            <div className={classes.checkout}>
+                <Button variant="contained" color="primary" className={classes.button}>
+                    Checkout
+                </Button>
+            </div>
+        </div>
     )
 }
 

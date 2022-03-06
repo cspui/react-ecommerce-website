@@ -12,7 +12,7 @@ export const itemDetailsStyles = makeStyles((theme: Theme) =>
             textTransform: 'none',
           },
           content: {
-            padding: theme.spacing(1),
+            padding: theme.spacing(0.5),
             [theme.breakpoints.up('sm')]: {
               padding: theme.spacing(2),
             },

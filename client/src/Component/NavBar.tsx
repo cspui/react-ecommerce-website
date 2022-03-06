@@ -1,23 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import Fab from '@material-ui/core/Fab';
+// component
+import {
+  Drawer,
+  LinearProgress,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  InputBase,
+  Menu,
+  MenuItem,
+  Button,
+  Zoom,
+  Fab,
+  useScrollTrigger,
+} from '@material-ui/core';
+
+import MenuTab from './MenuTab';
+
+// icons
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-
-import Button from '@material-ui/core/Button';
-
-import Zoom from '@material-ui/core/Zoom';
-import IconButton from '@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
-
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-
-import InputBase from '@material-ui/core/InputBase';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import SearchIcon from '@material-ui/icons/Search';
 
 // navigation
@@ -29,11 +34,11 @@ import { ChildrenProps } from "../Types/PropsType";
 // styles
 import { navBarStyles } from './NavBar.styles';
 
-// import auth from firebase
+// auth
 import { auth } from '../Firebase/Firebase';
 import { signOut } from "firebase/auth";
 
-// store
+// redux
 import { RootState } from '../Store/ReduxStore';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearUser, } from '../Store/UserSlice';
@@ -75,9 +80,10 @@ const NavBar = (props: ChildrenProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isLogin } = useSelector((state: RootState) => state.common);
+  const { isLogin, isLoading } = useSelector((state: RootState) => state.common);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const open = Boolean(anchorEl);
 
@@ -100,6 +106,10 @@ const NavBar = (props: ChildrenProps) => {
     }
   }
 
+  const closeMenu = () => {
+    setMenuOpen(false);
+  }
+
   // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   setAuth(event.target.checked);
   // };
@@ -117,9 +127,18 @@ const NavBar = (props: ChildrenProps) => {
     <React.Fragment>
       <AppBar>
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+            onClick={() => setMenuOpen(true)}>
             <MenuIcon />
           </IconButton>
+
+          <Drawer anchor='left' open={menuOpen} onClose={() => setMenuOpen(false)} >
+            <MenuTab logout={logout} closeMenu={closeMenu}/>
+          </Drawer>
 
           <Typography variant="h6" className={classes.title} onClick={() => navigate('/')}>
             Logo
@@ -181,9 +200,12 @@ const NavBar = (props: ChildrenProps) => {
               }}>Login</Button>
             )}
         </Toolbar>
+
+        {isLoading && <LinearProgress />}
       </AppBar>
 
       <Toolbar id="back-to-top-anchor" />
+
       <BackToTop {...props}>
         <Fab color="secondary" size="small" aria-label="scroll back to top">
           <KeyboardArrowUpIcon />
