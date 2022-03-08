@@ -34,7 +34,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     3. firestore and sample data (✅)
     4. cart checkout ui & stripe payment FPX
     5. JWT auth
-    6. Guarded routes for restricted access to page
+    6. Guarded routes for restricted access to page (✅)
         - nested scroll to top on route change
     7. middleware for authentication request in backend
     8. firebase security rules for restricted access to data (✅ need more test)
@@ -72,6 +72,8 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
 
     last: host a node server using google app engine
     https://cloud.google.com/appengine/docs/standard/nodejs/building-app
+
+    ssl cert: https://stackoverflow.com/questions/51363855/how-to-configure-axios-to-use-ssl-certificate
 */
 
 

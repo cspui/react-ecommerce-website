@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -78,6 +78,11 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    // if user signed in then navigate to profile page
+    if (auth.currentUser) navigate('/profile')
+  }, []);
+
   const [email, setEmail] = useLocalState('loginEmail', '');
   const [password, setPassword] = useLocalState('loginPassword', '');
 
@@ -123,10 +128,10 @@ export default function Login() {
 
         // navigate to home page or where it is from
         if (navigationTo) {
-          navigate(navigationTo);
+          navigate(navigationTo, { replace: true });
           dispatch(updateNavigationTo(''));
         } else {
-          navigate('/');
+          navigate('/', { replace: true });
         }
 
       })

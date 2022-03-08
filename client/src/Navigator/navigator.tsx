@@ -21,6 +21,7 @@ import Test from '../test';
 // components
 import NavBar from '../Component/NavBar';
 import ScrollToTop from '../Component/ScrollToTop';
+import { PrivateRoute } from './PrivateRoute';
 
 
 const Navigator = () => {
@@ -34,7 +35,11 @@ const Navigator = () => {
 
                     <Route path='/*' element={<Main />} />
 
-                    <Route path="/t" element={<Test />} />
+                    <Route path="/t" element={
+                        <PrivateRoute>
+                            <Test />
+                        </PrivateRoute>
+                    } />
 
                     <Route path="/itemdetails" >
                         <Route path=":id" element={<ItemDetails />} />
@@ -43,6 +48,12 @@ const Navigator = () => {
                     <Route path='/login' element={<Login />} />
 
                     <Route path='/signup' element={<SignUp />} />
+
+                    <Route path='/profile' element={
+                        <PrivateRoute>
+                            <div>Profile </div>
+                        </PrivateRoute>
+                    } />
 
                 </Routes>
 

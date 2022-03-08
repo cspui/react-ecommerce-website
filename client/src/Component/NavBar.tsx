@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // component
 import {
@@ -36,12 +36,12 @@ import { navBarStyles } from './NavBar.styles';
 
 // auth
 import { auth } from '../Firebase/Firebase';
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 
 // redux
 import { RootState } from '../Store/ReduxStore';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearUser, } from '../Store/UserSlice';
+import { clearUser, setUser } from '../Store/UserSlice';
 import { updateLogin, updateLoadingStatus, updateNavigationTo } from '../Store/CommonSlice';
 
 
@@ -87,6 +87,24 @@ const NavBar = (props: ChildrenProps) => {
 
   const open = Boolean(anchorEl);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      console.log('user changed', user)
+      if (user) {
+        // dispatch(setUser(userStore));
+        dispatch(updateLogin(true));
+      } else {
+        dispatch(updateLogin(false));
+        dispatch(clearUser());
+      }
+    });
+  
+    return () => {
+      dispatch(clearUser());
+      unsubscribe();
+    }
+  }, [])
+  
 
   const logout = async () => {
     try {
@@ -184,7 +202,10 @@ const NavBar = (props: ChildrenProps) => {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={() => {
+                  navigate('/profile');
+                  handleClose();
+                  }}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={() => {
                   handleClose();
