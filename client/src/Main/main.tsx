@@ -57,6 +57,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     Menu side bar
     Isomorphic page SSR, SEO friendly
     Code splitting / lazy imports
+    Added global font type (Chilanka) (✅)
 
 
     POST Development:

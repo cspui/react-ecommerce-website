@@ -10,6 +10,12 @@ let Theme = createTheme({
             main: Color.secondaryLight
         },
     },
+    typography: {
+        fontFamily: [
+          'Chilanka',
+          'cursive',
+        ].join(','),
+    },
 });
 
 Theme = responsiveFontSizes(Theme);
