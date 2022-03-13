@@ -17,6 +17,8 @@ import Login from '../Authentication/Login';
 import SignUp from '../Authentication/Signup';
 import ItemDetails from '../Item/ItemDetails';
 import Test from '../test';
+import Checkout from '../Cart/Checkout';
+import Profile from '../User/Profile';
 
 // components
 import NavBar from '../Component/NavBar';
@@ -46,12 +48,17 @@ const Navigator = () => {
                     </Route>
 
                     <Route path='/login' element={<Login />} />
-
                     <Route path='/signup' element={<SignUp />} />
 
                     <Route path='/profile' element={
                         <PrivateRoute>
-                            <div>Profile </div>
+                            <Profile />
+                        </PrivateRoute>
+                    } />
+
+                    <Route path='/checkout' element={
+                        <PrivateRoute>
+                            <Checkout />
                         </PrivateRoute>
                     } />
 

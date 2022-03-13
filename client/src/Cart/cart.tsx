@@ -7,6 +7,9 @@ import { cartStyles, Wrapper } from "./Cart.styles";
 import { Button, Typography } from "@material-ui/core";
 import { MenuOpen } from "@material-ui/icons";
 
+// navigation
+import { useNavigate } from "react-router-dom";
+
 // redux
 import { RootState } from '../Store/ReduxStore';
 import { useSelector } from 'react-redux';
@@ -19,6 +22,8 @@ import { CartProps } from "../Types/PropsType";
 const Cart = (props: CartProps) => {
     const { closeCart } = props;
     const classes = cartStyles();
+    const navigate = useNavigate();
+
     const { cartItems } = useSelector((state: RootState) => state.common);
 
     const calculateTotalPrice = (items: CartItemType[]) =>
@@ -43,7 +48,13 @@ const Cart = (props: CartProps) => {
                 <Typography variant="h5" >Total: ${calculateTotalPrice(cartItems).toFixed(2)}</Typography>
             </div>
             <div className={classes.checkout}>
-                <Button variant="contained" color="primary" className={classes.button}>
+                <Button 
+                variant="contained" 
+                color="primary" 
+                className={classes.button}
+                onClick={() => {
+                    navigate("/checkout");
+                }}>
                     Checkout
                 </Button>
             </div>
