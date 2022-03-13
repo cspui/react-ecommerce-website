@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useState } from "react";
 import { useQuery } from "react-query";
 import Draggable from 'react-draggable';
@@ -34,17 +34,19 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     3. firestore and sample data (✅)
     4. cart checkout ui & stripe payment FPX
     5. JWT auth
+        - login/signup refresh token, 
     6. Guarded routes for restricted access to page (✅)
         - nested scroll to top on route change
-    7. middleware for authentication request in backend
+    7. middleware for authentication request in backend (only needed for server, cloud func handled it ?)
+        - firebase auth middleware id token
     8. firebase security rules for restricted access to data (✅ need more test)
         - restrict read access to User collection to itself (uid) but allow write access to anyone (✅)
     9. store state when reload page (✅)
-        - need research on refresh token for user signin session and status
+        - need research on refresh token for user signin session and status (onAuthStateChanged(✅)) remove local storage ?
     10. more signup/login options (google, facebook, etc) 
     11. password reset & verification (email/phone)
         - confirm password (rewrite) on signup ui + func (✅)
-    12. Pages of items (page 1, page 2, page 3, etc)
+    12. Pages of items (page 1, page 2, page 3, etc) OR infinite scroll
 
     unassigned:
     Admin custom claim or role
@@ -54,16 +56,19 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     Settings ?
     Notification sys
     Search func product
-    Menu side bar
+    filter func product
+    Menu side bar (✅)
     Isomorphic page SSR, SEO friendly
     Code splitting / lazy imports
     Added global font type (Chilanka) (✅)
+    stress test 3000 items + some optimization(memo) (✅)
 
 
     POST Development:
     image upload func (firestore bucket ? store in aws s3 ?)
     Admin functions / Panel (batch upload product etc)
     styling fix
+    move all inline functions to arrow function top (optimization)
 
 
     Explore:
@@ -81,6 +86,23 @@ const getProducts = async (): Promise<CartItemType[]> =>
     await (await fetch('https://fakestoreapi.com/products')).json();
 
 
+// very heavy render functions for all items
+const allItems = (storeItems: CartItemType[]) => {
+    console.log('RENDERING all items !!!');
+
+    return (
+        <React.Fragment>
+            {storeItems?.map(item => (
+                <Grid item key={item.id} xs={12} sm={6} md={4} lg={3} xl={2}>
+                    <Item item={item} />
+                </Grid>
+            ))}
+        </React.Fragment>
+    );
+}
+
+
+
 const Main = () => {
     const dispatch = useDispatch();
 
@@ -91,6 +113,7 @@ const Main = () => {
 
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const defaultCartIconPosition = { x: 0, y: 0 };
+
 
     // const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
 
@@ -105,6 +128,7 @@ const Main = () => {
     //     // update loading status
     //     dispatch(updateLoadingStatus(isLoading));
     // }, [isLoading])
+
 
     const closeCart = () => {
         setCartOpen(false);
@@ -123,6 +147,11 @@ const Main = () => {
             }, 100);
         }
     }
+
+
+    // test on memorize render items 
+    const MemoizedItems = useMemo(() => allItems(storeItems), [storeItems]);
+
 
     return (
         <>
@@ -160,11 +189,7 @@ const Main = () => {
             </div>
 
             <Grid container spacing={3}>
-                {storeItems?.map(item => (
-                    <Grid item key={item.id} xs={12} sm={6} md={4} lg={3} xl={2}>
-                        <Item item={item} />
-                    </Grid>
-                ))}
+                {MemoizedItems}
             </Grid>
 
         </>

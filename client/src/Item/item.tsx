@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 // mui
 import Card from '@material-ui/core/Card';
@@ -27,10 +27,19 @@ const Item: React.FC<ItemProps> = ({ item }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const handleAddToCart = useCallback(
+        () => dispatch(addToCart(item)),
+        [item],
+    )
+
+    const handleClick = useCallback(
+        () => navigate(`/itemdetails/${item.id}`),
+        [item],
+    )
 
     return (
         <Card className={classes.root}>
-            <CardActionArea className={classes.media} onClick={() => navigate(`/itemdetails/${item.id}`)}>
+            <CardActionArea className={classes.media} onClick={handleClick}>
                 <CardMedia
                     draggable="false"
                     component="img"
@@ -51,7 +60,7 @@ const Item: React.FC<ItemProps> = ({ item }) => {
                 ${item.price.toFixed(2)}
             </Typography>
 
-            <Button className={classes.button} onClick={() => dispatch(addToCart(item))}>Add to cart</Button>
+            <Button className={classes.button} onClick={handleAddToCart}>Add to cart</Button>
         </Card>
     )
 }

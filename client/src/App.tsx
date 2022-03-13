@@ -87,38 +87,38 @@ const App = () => {
       // // TEST todo TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 
       // // Get a new write batch
-      // // const batch = writeBatch(firestore);
+      // const batch = writeBatch(firestore);
 
-      // for (let startIndex = 2; startIndex < 300; startIndex++) {
+      // for (let startIndex = 2499; startIndex < 2999; startIndex++) {
       //   const item: CartItemType = {
       //     id: startIndex,
       //     category: startIndex.toString(),
       //     description: startIndex.toString() + ' description',
-      //     image: allItems[0].image,
-      //     price: 0,
-      //     title: 'Big' + startIndex.toString(),
+      //     image: 'https://sm.pcmag.com/t/pcmag_ap/news/p/pc-builder/pc-builder-creates-an-nvidia-rtx-4090-for-april-fools-day-an_qfcc.1920.jpg',
+      //     price: Math.random() * 100,
+      //     title: 'Item (t) ' + startIndex.toString(),
       //     rating: {
-      //       count: 0,
-      //       rate: 0,
+      //       count: Math.random() * 100,
+      //       rate: Math.random() * 5,
       //     },
       //     uniqueId: startIndex.toString(),
-      //     quantity: 0,
+      //     quantity: Math.random() * 100,
       //     createdAt: Date.now(),
       //     updatedAt: Date.now(),
-      //     amount: 0
+      //     amount: Math.random() * 50
       //   }
 
-      //   // Set the value 
-      //   // const nycRef = doc(firestore, Collections.Items, startIndex.toString());
-      //   // batch.set(nycRef, item);
+        // // Set the value 
+        // const nycRef = doc(firestore, Collections.Items, startIndex.toString());
+        // batch.set(nycRef, item);
 
-      //   // // Delete the city 'LA'
-      //   // const laRef = doc(firestore, Collections.Items, startIndex.toString());
-      //   // batch.delete(laRef);
+        // // Delete the city 'LA'
+        // const laRef = doc(firestore, Collections.Items, startIndex.toString());
+        // batch.delete(laRef);
       // }
 
       // // Commit the batch
-      // // await batch.commit();
+      // await batch.commit();
     }
     catch (error) {
       console.log('error', error);
