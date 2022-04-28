@@ -89,7 +89,7 @@ const App = () => {
       // // Get a new write batch
       // const batch = writeBatch(firestore);
 
-      // for (let startIndex = 2499; startIndex < 2999; startIndex++) {
+      // for (let startIndex = 99; startIndex < 499; startIndex++) {
       //   const item: CartItemType = {
       //     id: startIndex,
       //     category: startIndex.toString(),

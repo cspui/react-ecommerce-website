@@ -34,7 +34,7 @@ export const itemStyles = makeStyles((theme: Theme) =>
             height: '100%',
         },
         media: {
-            height: '80%',
+            height: '70%',
             flexGrow: 1,
             flexDirection: 'column',
             alignItems: 'stretch',
@@ -45,6 +45,12 @@ export const itemStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
+        },
+        rating: {
+            height: '10%',
+            paddingLeft: 15,
+            display: 'flex',
+            alignItems: 'center', 
         },
         button: {
             height: '10%',

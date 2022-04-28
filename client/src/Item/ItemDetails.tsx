@@ -89,7 +89,7 @@ const ItemDetails = () => {
                 </Typography>
 
                 <Grid container style={{ alignItems: 'center' }}>
-                  <Rating name="read-only" value={currItem ? currItem.rating.rate : 0} readOnly />
+                  <Rating name="read-only" value={currItem ? currItem.rating.rate : 0} readOnly precision={0.1} />
                   <Typography className={classes.content_small}>
                     {currItem ? currItem.rating.count : 0}
                   </Typography>

@@ -56,7 +56,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     Settings ?
     Notification sys
     Search func product
-    filter func product
+    filter / sort func product
     Menu side bar (✅)
     Isomorphic page SSR, SEO friendly
     Code splitting / lazy imports
@@ -119,7 +119,7 @@ const Main = () => {
 
     // useEffect(() => {
     //     if (data) {
-    //         // dispatch(updateStoreItems(data));
+    //         dispatch(updateStoreItems(data));
     //         console.log(data);
     //     }
     // }, [data])
