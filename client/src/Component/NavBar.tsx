@@ -42,7 +42,7 @@ import { signOut, onAuthStateChanged } from "firebase/auth";
 import { RootState } from '../Store/ReduxStore';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearUser, setUser } from '../Store/UserSlice';
-import { updateLogin, updateLoadingStatus, updateNavigationTo } from '../Store/CommonSlice';
+import { updateLogin, updateLoadingStatus, updateNavigationTo, updateSearchText } from '../Store/CommonSlice';
 
 
 function BackToTop(props: ChildrenProps) {
@@ -80,10 +80,10 @@ const NavBar = (props: ChildrenProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isLogin, isLoading } = useSelector((state: RootState) => state.common);
+  const { isLogin, isLoading, searchText } = useSelector((state: RootState) => state.common);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const open = Boolean(anchorEl);
 
@@ -173,6 +173,8 @@ const NavBar = (props: ChildrenProps) => {
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              onChange={(event) => dispatch(updateSearchText(event.target.value))}
+              value={searchText}
             />
           </div>
 

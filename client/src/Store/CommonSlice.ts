@@ -7,6 +7,7 @@ export interface CommonState {
     storeItems: CartItemType[],                      // items show in the store
     isLoading: boolean,                              // is the data loading
     navigationTo: string,                            // navigation to the next page
+    searchText: string,                              // search text
 }
 
 const initialState: CommonState = {
@@ -15,6 +16,7 @@ const initialState: CommonState = {
     storeItems: [],
     isLoading: false,
     navigationTo: '',
+    searchText: '',
 }
 
 // localstorage get items for each state
@@ -39,6 +41,11 @@ if (typeof window !== undefined && window.localStorage) {
     if (saved5) {
         initialState.navigationTo = JSON.parse(saved5);
     }
+    const saved6 = window.localStorage.getItem('searchText');
+    if (saved6) {
+        initialState.searchText = JSON.parse(saved6);
+    }
+
 }
 
 export const CommonSlice = createSlice({
@@ -116,6 +123,12 @@ export const CommonSlice = createSlice({
             state.navigationTo = action.payload;
         },
 
+        // for search text
+        updateSearchText: (state, action: PayloadAction<string>) => {
+            localStorage.setItem('searchText', JSON.stringify(action.payload));
+            state.searchText = action.payload;
+        },
+
     },
 })
 
@@ -132,6 +145,8 @@ export const {
     updateLoadingStatus,
 
     updateNavigationTo,
+
+    updateSearchText,
 
 } = CommonSlice.actions;
 

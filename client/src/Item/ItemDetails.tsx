@@ -30,7 +30,7 @@ const ItemDetails = () => {
   const { storeItems } = useSelector((state: RootState) => state.common);
 
   const [currItem, setCurrItem] = useState<CartItemType | undefined>();
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState<number>(0);
 
 
   useEffect(() => {

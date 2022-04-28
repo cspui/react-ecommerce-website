@@ -8,6 +8,7 @@ import {
     Drawer,
     Grid,
     Badge,
+    TablePagination,
 } from "@material-ui/core";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
@@ -46,7 +47,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     10. more signup/login options (google, facebook, etc) 
     11. password reset & verification (email/phone)
         - confirm password (rewrite) on signup ui + func (✅)
-    12. Pages of items (page 1, page 2, page 3, etc) OR infinite scroll
+    12. Pages of items (page 1, page 2, page 3, etc) OR infinite scroll (✅)
 
     unassigned:
     Admin custom claim or role
@@ -55,13 +56,14 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     Comments and ratings for produts
     Settings ?
     Notification sys
-    Search func product
-    filter / sort func product
+    Search func product by name (✅)
+    filter / sort func product by price (✅)
     Menu side bar (✅)
     Isomorphic page SSR, SEO friendly
     Code splitting / lazy imports
     Added global font type (Chilanka) (✅)
     stress test 3000 items + some optimization(memo) (✅)
+    support multi language
 
 
     POST Development:
@@ -106,13 +108,15 @@ const allItems = (storeItems: CartItemType[]) => {
 const Main = () => {
     const dispatch = useDispatch();
 
-    const { cartItems: cartItem } = useSelector((state: RootState) => state.common);
-    const { storeItems } = useSelector((state: RootState) => state.common);
+    const { cartItems: cartItem, storeItems, searchText } = useSelector((state: RootState) => state.common);
 
-    const [cartOpen, setCartOpen] = useState(false);
-
-    const [isDragging, setIsDragging] = useState<boolean>(false);
     const defaultCartIconPosition = { x: 0, y: 0 };
+
+    const [cartOpen, setCartOpen] = useState<boolean>(false);
+    const [isDragging, setIsDragging] = useState<boolean>(false);
+    const [displayStoreItems, setDisplayStoreItems] = useState<CartItemType[]>([]);
+    const [pageNumber, setPageNumber] = useState<number>(0);
+    const [pageSize, setPageSize] = useState<number>(12);
 
 
     // const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
@@ -130,13 +134,37 @@ const Main = () => {
     // }, [isLoading])
 
 
-    const closeCart = () => {
+    // process items to display for each page
+    useEffect(() => {
+        // search and filter items
+        let tempDisplayStoreItems = [...storeItems];
+        if (searchText) {
+            tempDisplayStoreItems = storeItems.filter(item => item.title.toLowerCase().includes(searchText.toLowerCase()));
+        }
+
+        // sort items
+        tempDisplayStoreItems = tempDisplayStoreItems.sort((a, b) => a.title.localeCompare(b.title));
+
+        // limit items to be displayed by page
+        const startIndex = pageNumber * pageSize;
+        const endIndex = startIndex + pageSize;
+        tempDisplayStoreItems = tempDisplayStoreItems.slice(startIndex, endIndex);
+
+        // update display items
+        setDisplayStoreItems(tempDisplayStoreItems);
+    }, [pageNumber, storeItems, searchText, pageSize]);
+
+
+    const handleOpenCart = () => {
+        setCartOpen(true);
+    }
+    const handleCloseCart = () => {
         setCartOpen(false);
     }
 
     const getTotalItems = (items: CartItemType[]) => items.reduce((acc: number, items) => acc + items.amount, 0);
 
-    const eventControl = (event: { type: any; }, info: any) => {
+    const dragEventControl = (event: { type: any; }, info: any) => {
         if (event.type === 'mousemove' || event.type === 'touchmove' || event.type === 'touchstart') {
             setIsDragging(true)
         }
@@ -148,6 +176,20 @@ const Main = () => {
         }
     }
 
+    const handleChangePage = (
+        event: React.MouseEvent<HTMLButtonElement> | null,
+        newPage: number,
+    ) => {
+        setPageNumber(newPage);
+    };
+
+    const handleChangeRowsPerPage = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
+        setPageSize(parseInt(event.target.value, 10));
+        setPageNumber(0);
+    };
+
 
     // test on memorize render items 
     const MemoizedItems = useMemo(() => allItems(storeItems), [storeItems]);
@@ -155,8 +197,8 @@ const Main = () => {
 
     return (
         <>
-            <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)} >
-                <Cart closeCart={closeCart} />
+            <Drawer anchor='right' open={cartOpen} onClose={handleCloseCart} >
+                <Cart closeCart={handleCloseCart} />
             </Drawer>
 
             <div style={{
@@ -169,14 +211,14 @@ const Main = () => {
             }}>
                 <Draggable
                     defaultPosition={defaultCartIconPosition}
-                    onDrag={eventControl}
-                    onStop={eventControl}
+                    onDrag={dragEventControl}
+                    onStop={dragEventControl}
                 >
                     <StyledButton
                         disabled={isDragging}
-                        onClick={() => setCartOpen(true)}
-                        onTouchStart={() => setCartOpen(true)}
-                        onTouchMove={() => setCartOpen(false)}
+                        onClick={handleOpenCart}
+                        onTouchStart={handleOpenCart}
+                        onTouchMove={handleCloseCart}
                         color='primary'>
                         {/* may need change the icon button to Fab */}
                         <div style={{ backgroundColor: 'rgba(253, 189, 14, 0.884)', borderRadius: 18, width: 37, height: 37, boxShadow: '1px 5px 15px 1px rgba(0,0,0,0.8)' }}>
@@ -189,8 +231,33 @@ const Main = () => {
             </div>
 
             <Grid container spacing={3}>
-                {MemoizedItems}
+                {/* {MemoizedItems} */}
+
+                {displayStoreItems?.map(item => (
+                    <Grid item key={item.id} xs={12} sm={6} md={4} lg={3} xl={2}>
+                        <Item item={item} />
+                    </Grid>
+                ))}
             </Grid>
+
+            <TablePagination
+                rowsPerPageOptions={[12, 24, 36]}
+                component="div"
+                count={20}
+                rowsPerPage={pageSize}
+                page={pageNumber}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 24,
+                    marginBottom: 40,
+                }}
+            />
 
         </>
     )

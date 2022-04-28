@@ -95,8 +95,8 @@ export default function SignUp() {
   const [fname, setFname] = useLocalState('signupFname', '');
   const [lname, setLname] = useLocalState('signupLname', '');
   const [email, setEmail] = useLocalState('signupEmail', '');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
 
   const { navigationTo } = useSelector((state: RootState) => state.common);
 
