@@ -24,6 +24,7 @@ import Profile from '../User/Profile';
 import NavBar from '../Component/NavBar';
 import ScrollToTop from '../Component/ScrollToTop';
 import { PrivateRoute } from './PrivateRoute';
+import PopupModal from '../Component/PopupModal';
 
 
 const Navigator = () => {
@@ -31,6 +32,8 @@ const Navigator = () => {
     return (
         <BrowserRouter>
             <NavBar />
+
+            <PopupModal />
 
             <ScrollToTop >
                 <Routes>

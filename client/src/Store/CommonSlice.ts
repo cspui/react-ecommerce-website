@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CartItemType } from '../Types/CartItemType';
+import { ModalMsgType } from '../Types/ModalMsgType';
 
 export interface CommonState {
     isLogin: boolean,                                // is user logged in
@@ -8,6 +9,7 @@ export interface CommonState {
     isLoading: boolean,                              // is the data loading
     navigationTo: string,                            // navigation to the next page
     searchText: string,                              // search text
+    modalMsg: ModalMsgType,                          // modal message 
 }
 
 const initialState: CommonState = {
@@ -17,6 +19,10 @@ const initialState: CommonState = {
     isLoading: false,
     navigationTo: '',
     searchText: '',
+    modalMsg: {
+        status: '' as 'success' | 'error',
+        msg: '',
+    },
 }
 
 // localstorage get items for each state
@@ -129,6 +135,11 @@ export const CommonSlice = createSlice({
             state.searchText = action.payload;
         },
 
+        // for modal message
+        updateModalMsg: (state, action: PayloadAction<ModalMsgType>) => {
+            state.modalMsg = action.payload;
+        },
+
     },
 })
 
@@ -147,6 +158,8 @@ export const {
     updateNavigationTo,
 
     updateSearchText,
+
+    updateModalMsg,
 
 } = CommonSlice.actions;
 

@@ -31,7 +31,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     ============= TODO ===============
     1. firebase auth create user and ui for login/signup (email/password) (✅)
     2. backend api signup and store data in firestore (✅)
-        - store cart items in firestore ?
+        - store cart items in firestore for each user ?
     3. firestore and sample data (✅)
     4. cart checkout ui & stripe payment FPX
     5. JWT auth
@@ -51,7 +51,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
 
     unassigned:
     Admin custom claim or role
-    Error modal popup
+    modal popup (✅)
     Profile page and functions
     Comments and ratings for produts
     Settings ?
@@ -114,7 +114,9 @@ const Main = () => {
 
     const [cartOpen, setCartOpen] = useState<boolean>(false);
     const [isDragging, setIsDragging] = useState<boolean>(false);
+    const [filterStoreItems, setFilterStoreItems] = useState<CartItemType[]>([]);
     const [displayStoreItems, setDisplayStoreItems] = useState<CartItemType[]>([]);
+    const [numOfItems, setNumOfItems] = useState<number>(storeItems?.length || 0);
     const [pageNumber, setPageNumber] = useState<number>(0);
     const [pageSize, setPageSize] = useState<number>(12);
 
@@ -134,25 +136,37 @@ const Main = () => {
     // }, [isLoading])
 
 
-    // process items to display for each page
+    // search or filter items
     useEffect(() => {
-        // search and filter items
-        let tempDisplayStoreItems = [...storeItems];
+        let tempFilterStoreItems = [...storeItems];
         if (searchText) {
-            tempDisplayStoreItems = storeItems.filter(item => item.title.toLowerCase().includes(searchText.toLowerCase()));
+            tempFilterStoreItems = storeItems.filter(item => item.title.toLowerCase().includes(searchText.toLowerCase()));
         }
 
         // sort items
-        tempDisplayStoreItems = tempDisplayStoreItems.sort((a, b) => a.title.localeCompare(b.title));
+        tempFilterStoreItems = tempFilterStoreItems.sort((a, b) => a.title.localeCompare(b.title));
 
-        // limit items to be displayed by page
+        // update filter items
+        setFilterStoreItems(tempFilterStoreItems);
+        setNumOfItems(tempFilterStoreItems.length);
+
+        // if pageNumber is more than number of items, set pageNumber to 0
+        if (pageNumber > Math.ceil(tempFilterStoreItems.length / pageSize) - 1) {
+            setPageNumber(0);
+        }
+    }, [storeItems, searchText]);
+
+    // update display items when page size or page number change
+    useEffect(() => {
+        let tempDisplayStoreItems = [...filterStoreItems];
+
+        // items to be displayed by page
         const startIndex = pageNumber * pageSize;
         const endIndex = startIndex + pageSize;
         tempDisplayStoreItems = tempDisplayStoreItems.slice(startIndex, endIndex);
 
-        // update display items
         setDisplayStoreItems(tempDisplayStoreItems);
-    }, [pageNumber, storeItems, searchText, pageSize]);
+    }, [pageNumber, filterStoreItems, pageSize]);
 
 
     const handleOpenCart = () => {
@@ -243,7 +257,7 @@ const Main = () => {
             <TablePagination
                 rowsPerPageOptions={[12, 24, 36]}
                 component="div"
-                count={20}
+                count={numOfItems}
                 rowsPerPage={pageSize}
                 page={pageNumber}
                 onPageChange={handleChangePage}
