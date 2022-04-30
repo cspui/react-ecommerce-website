@@ -34,6 +34,7 @@ import { updateLogin, updateLoadingStatus, updateNavigationTo } from '../Store/C
 
 // hooks
 import useLocalState from '../Hooks/useLocalState';
+import { popup } from '../Component/Common';
 
 
 function Copyright() {
@@ -92,11 +93,11 @@ export default function Login() {
   const signin = async () => {
     // validate input
     if (email.length < 1) {
-      alert('Please enter your email !');
+      popup('Error', 'Please enter your email !', dispatch);
       return;
     }
     if (password.length < 1) {
-      alert('Please enter your password !');
+      popup('Error', 'Please enter your password !', dispatch);
       return;
     }
 
@@ -139,13 +140,13 @@ export default function Login() {
         console.log(error)
 
         if (error.code == AuthErrorCodes.INVALID_EMAIL) {
-          alert('Invalid email');
+          popup('Error', 'Invalid email !', dispatch);
         }
         else if (error.code == AuthErrorCodes.USER_DELETED) {
-          alert('User not found');
+          popup('Error', 'User not found !', dispatch);
         }
         else {
-          alert('Unknown error');
+          popup('Error', 'Unknown error !', dispatch);
         }
       });
   };

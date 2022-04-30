@@ -20,7 +20,7 @@ const initialState: CommonState = {
     navigationTo: '',
     searchText: '',
     modalMsg: {
-        status: '' as 'success' | 'error',
+        status: '' as 'Info' | 'Error',
         msg: '',
     },
 }

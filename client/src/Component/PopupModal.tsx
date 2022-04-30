@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, Modal, Typography } from '@material-ui/core';
+import InfoIcon from '@material-ui/icons/Info';
+import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 
 // redux
 import { RootState } from '../Store/ReduxStore';
@@ -39,9 +41,15 @@ const PopupModal = () => {
                 open={open}
                 onClose={handleClose}>
                 <Box className={classes.box}>
-                    <Typography variant="h6" component="h2">
-                        {modalMsg.status}
-                    </Typography>
+                    <div className={classes.title}>
+                        <div className={classes.icon}>
+                            {modalMsg.status == 'Error' ? <WarningRoundedIcon /> :
+                                modalMsg.status == 'Info' ? <InfoIcon /> : <></>}
+                        </div>
+                        <Typography variant="h6" component="h2">
+                            {modalMsg.status}
+                        </Typography>
+                    </div>
                     <Typography className={classes.message}>
                         {modalMsg.msg}
                     </Typography>

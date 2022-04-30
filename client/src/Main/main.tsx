@@ -64,6 +64,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     Added global font type (Chilanka) (✅)
     stress test 3000 items + some optimization(memo) (✅)
     support multi language
+    track user purchase history etc
 
 
     POST Development:
@@ -206,7 +207,7 @@ const Main = () => {
 
 
     // test on memorize render items 
-    const MemoizedItems = useMemo(() => allItems(storeItems), [storeItems]);
+    // const MemoizedItems = useMemo(() => allItems(storeItems), [storeItems]);
 
 
     return (

@@ -39,6 +39,7 @@ import { updateLogin, updateLoadingStatus, updateNavigationTo } from '../Store/C
 
 // hooks
 import useLocalState from '../Hooks/useLocalState';
+import { popup } from '../Component/Common';
 
 
 // html textinput autofill
@@ -104,27 +105,27 @@ export default function SignUp() {
   const signUpUser = () => {
     // validate input
     if (fname.length < 1) {
-      alert('Please enter your first name !');
+      popup('Error', 'Please enter your first name !', dispatch);
       return;
     }
     if (lname.length < 1) {
-      alert('Please enter your last name !');
+      popup('Error', 'Please enter your last name !', dispatch);
       return;
     }
     if (email.length < 1) {
-      alert('Please enter your email !');
+      popup('Error', 'Please enter your email !', dispatch);
       return;
     }
     if (password.length < 1) {
-      alert('Please enter your password !');
+      popup('Error', 'Please enter your password !', dispatch);
       return;
     }
     if (confirmPassword.length < 1) {
-      alert('Please confirm your password !');
+      popup('Error', 'Please confirm your password !', dispatch);
       return;
     }
     if (password !== confirmPassword) {
-      alert('Confirm password do not match !');
+      popup('Error', 'Confirm password do not match !', dispatch);
       return;
     }
 
@@ -205,16 +206,16 @@ export default function SignUp() {
         console.log(error)
 
         if (error.code == AuthErrorCodes.EMAIL_EXISTS) {
-          alert('Email already in use');
+          popup('Error', 'Email already in use !', dispatch);
         }
         else if (error.code == AuthErrorCodes.INVALID_EMAIL) {
-          alert('Invalid email');
+          popup('Error', 'Invalid email !', dispatch);
         }
         else if (error.code == AuthErrorCodes.WEAK_PASSWORD) {
-          alert('Weak password');
+          popup('Error', 'Password is too weak !', dispatch);
         }
         else {
-          alert('Unknown error');
+          popup('Error', 'Unknown error !', dispatch);
         }
       });
   }

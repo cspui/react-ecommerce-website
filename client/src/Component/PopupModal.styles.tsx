@@ -25,6 +25,15 @@ export const PopupModalStyles = makeStyles((theme: Theme) =>
                 width: 250,
             },
         },
+        title: {
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'row',
+        },
+        icon: {
+            display: 'flex',
+            marginRight: theme.spacing(1),
+        },
         message: {
             marginTop: theme.spacing(2),
             padding: theme.spacing(1),
