@@ -65,6 +65,7 @@ import { updateCartItem, updateStoreItems, updateLoadingStatus } from '../Store/
     stress test 3000 items + some optimization(memo) (✅)
     support multi language
     track user purchase history etc
+    auto get user location? or ask user to enter location?
 
 
     POST Development:

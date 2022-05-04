@@ -43,7 +43,7 @@ const PopupModal = () => {
                 <Box className={classes.box}>
                     <div className={classes.title}>
                         <div className={classes.icon}>
-                            {modalMsg.status == 'Error' ? <WarningRoundedIcon /> :
+                            {modalMsg.status == 'Error' ? <WarningRoundedIcon color='error'/> :
                                 modalMsg.status == 'Info' ? <InfoIcon /> : <></>}
                         </div>
                         <Typography variant="h6" component="h2">
